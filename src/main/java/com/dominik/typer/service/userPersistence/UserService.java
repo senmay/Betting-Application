@@ -35,5 +35,8 @@ public class UserService {
     public void updateUser(Integer id, User user) {
         userPersistence.updateUserById(id, user);
     }
+    public User getUserWithUsername(String username) {
+        return userPersistence.getUserByUsername(username);
+    }
 }
 
