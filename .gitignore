@@ -1,4 +1,10 @@
 /.idea/
 /target/
 /src/main/java/org/
-/pom.xml
+/src/test/java/org.mocktest/
+
+*.iml
+
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
