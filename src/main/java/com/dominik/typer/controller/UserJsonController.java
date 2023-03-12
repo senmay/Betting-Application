@@ -9,7 +9,6 @@ import com.dominik.typer.service.userPersistence.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public class UserJsonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void registerUser(@RequestBody @Validated UserJson userJson) {
+    void registerUser(@RequestBody UserJson userJson) {
         userService.saveUser(userMapper.mapFromJson(userJson));
     }
 
@@ -52,7 +51,7 @@ public class UserJsonController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    void updateUser(@PathVariable Integer id, @RequestBody @Validated UserJson updatedUser) {
+    void updateUser(@PathVariable Integer id, @RequestBody UserJson updatedUser) {
         userService.updateUser(id, userMapper.mapFromJson(updatedUser));
     }
 
