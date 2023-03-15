@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -24,8 +25,9 @@ public class UserEntity {
     private Integer points;
 
     private String email;
+    private BigDecimal balance;
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole userType;
 
     @Override
     public boolean equals(Object o) {

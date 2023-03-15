@@ -5,7 +5,7 @@ import com.dominik.typer.model.exceptions.DbError;
 import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.service.DbErrorService;
-import com.dominik.typer.service.userPersistence.UserService;
+import com.dominik.typer.service.userpersistence.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
