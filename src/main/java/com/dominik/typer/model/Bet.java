@@ -14,7 +14,7 @@ public class Bet {
     Integer id;
     Integer matchId;
     Integer userId;
-    boolean pointsFromBetEvent;
+    Integer pointsFromBetEvent;
     BetType betType;
     Integer betAmount;
 }

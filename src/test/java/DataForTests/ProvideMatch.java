@@ -58,6 +58,24 @@ public interface ProvideMatch {
         }
         return matchList;
     }
+    default List<Match> provideMatchListWithIdBetween5And10(){
+        Faker faker = new Faker();
+        List<Match> matchList = new ArrayList<>();
+        for (int i = 5; i <= 10; i++) {
+            matchList.add(Match.builder()
+                    .id(i)
+                    .homeTeamId(faker.number().numberBetween(1, 100))
+                    .awayTeamId(faker.number().numberBetween(1, 100))
+                    .dateOfEvent(faker.date().between(faker.date().past(100, TimeUnit.DAYS), faker.date().future(100, TimeUnit.DAYS)))
+                    .oddsForHomeTeam(faker.number().randomDouble(2, 1, 5))
+                    .oddsForDraw(faker.number().randomDouble(2, 1, 5))
+                    .oddsForAwayTeam(faker.number().randomDouble(2, 1, 5))
+                    .isFinished(faker.bool().bool())
+                    .matchResultId(faker.number().numberBetween(1, 100))
+                    .build());
+        }
+        return matchList;
+    }
     default List<Match> provide20MatchesWithDateInFuture(){
         Faker faker = new Faker();
         List<Match> matchList = new ArrayList<>();
