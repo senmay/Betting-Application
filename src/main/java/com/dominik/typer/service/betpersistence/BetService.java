@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class BetService {
     private final BetPersistence betPersistence;
     public void saveBet(Bet bet) {
+        // buisnessValidation
         betPersistence.saveBet(bet);
-
     }
 }

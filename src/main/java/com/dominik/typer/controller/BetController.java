@@ -11,14 +11,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bet")
 @RequiredArgsConstructor
 public class BetController {
+
+
     private final BetService betService;
     private final BetMapper betMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createBet(@RequestBody BetJson betJson) {
+        //validator.validate(betJson);
+
+
+
         betService.saveBet(betMapper.mapFromBetJson(betJson));
     }
+
+
 
 
 }
