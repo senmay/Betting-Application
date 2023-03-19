@@ -19,16 +19,12 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
     private String username;
-
     private Integer points;
-
     private String email;
     private BigDecimal balance;
     @Enumerated(EnumType.STRING)
     private UserRole userType;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,7 +32,6 @@ public class UserEntity {
         UserEntity that = (UserEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
-
     @Override
     public int hashCode() {
         return getClass().hashCode();

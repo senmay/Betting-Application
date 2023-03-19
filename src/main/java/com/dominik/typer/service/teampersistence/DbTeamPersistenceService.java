@@ -2,6 +2,7 @@ package com.dominik.typer.service.teampersistence;
 
 import com.dominik.typer.model.Team;
 import com.dominik.typer.model.entity.TeamEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.TeamMapper;
 import com.dominik.typer.repository.TeamRepository;
 import org.springframework.context.annotation.Profile;
@@ -30,15 +31,16 @@ public class DbTeamPersistenceService implements TeamPersistence {
     }
 
     @Override
+    public Team getTeamById(Integer id) {
+        TeamEntity teamEntity = teamRepository.findById(id).orElseThrow(() -> new MyAppException("No team with this id"));
+        return teamMapper.mapFromTeamEntity(teamEntity);
+    }
+
+    @Override
     public Team getTeamByName(String name) {
         Optional<TeamEntity> byName = teamRepository.getByName(name);
         return byName.map(teamMapper::mapFromTeamEntity).orElseThrow(() -> new RuntimeException("No team with this name"));
-//        TeamEntity team = new TeamEntity();
-//        team.setName(name);
-//        Example<TeamEntity> example = Example.of(team);
-//        Optional<TeamEntity> one = teamRepository.findOne(example);
     }
-
     @Override
     public List<Team> getAllTeams() {
         return teamMapper.mapFromListTeamEntity(teamRepository.findAll());

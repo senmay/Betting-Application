@@ -1,12 +1,13 @@
 package com.dominik.typer.controller;
 
-import DataForTests.UserProvider;
+import com.dominik.typer.DataForTests.UserProvider;
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.userpersistence.UserService;
+import com.dominik.typer.validators.GeneralValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -23,28 +24,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = { UserJsonController.class, UserMapper.class} )
+@WebMvcTest(controllers = {UserJsonController.class, UserMapper.class})
 class UserJsonControllerTest implements UserProvider {
 
     @MockBean
     UserService userService;
     @Autowired
     ObjectMapper objectMapper;
-
     @MockBean
     DbErrorService dbErrorService;
-
-//    @LocalServerPort
-//    private int port;
-
+    @MockBean
+    GeneralValidator validator;
     @Autowired
     private MockMvc mockMvc;
-
-//    @PostConstruct
-//    public void init() {
-//        String uri = "http://localhost:" + port;
-//    }
-
 
     @Test
     void givenUser_whenGetAllUsers_returnUsers() throws Exception {

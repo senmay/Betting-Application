@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface TeamPersistence {
     void saveTeam(Team team);
+    Team getTeamById(Integer id);
     Team getTeamByName(String name);
     List<Team> getAllTeams();
     boolean deleteTeamByName(String name);

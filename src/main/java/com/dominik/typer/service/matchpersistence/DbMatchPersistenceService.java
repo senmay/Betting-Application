@@ -2,9 +2,9 @@ package com.dominik.typer.service.matchpersistence;
 
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.MatchEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.repository.MatchRepository;
-import com.dominik.typer.service.adminpersistence.AdminService;
 import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -20,25 +20,14 @@ public class DbMatchPersistenceService implements MatchPersistance {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
     private final TeamService teamService;
-    private final AdminService adminService;
-
     @Override
     public void save(Match match) {
-        if (matchRepository.existsById(match.getId())) {
-            throw new RuntimeException("Match with id: " + match.getId() + " already exists");
-        }
         matchRepository.save(matchMapper.mapToEntity(match));
     }
     @Override
     public void saveWithAdmin(String username, Match match) {
-        if(adminService.isAdmin(username)) {
-            if (matchRepository.existsById(match.getId())) {
-                throw new RuntimeException("Match with id: " + match.getId() + " already exists");
-            }
             matchRepository.save(matchMapper.mapToEntity(match));
         }
-    }
-
     @Override
     public List<Match> getAllMatches() {
         List<MatchEntity> matchEntityList = matchRepository.findAll();
@@ -52,17 +41,10 @@ public class DbMatchPersistenceService implements MatchPersistance {
     }
 
     @Override
-    public Optional<Match> getMatchById(Integer id) {
-//        Optional<MatchEntity> matchEntity = matchRepository.findById(id);
-//        if (matchEntity.isPresent()) {
-//            Team homeTeam = teamService.getTeamByName(matchEntity.get().getHomeTeamName());
-//            Team awayTeam = teamService.getTeamByName(matchEntity.get().getAwayTeamName());
-//            Match match = matchEntityMapper.map(matchEntity.get(), homeTeam, awayTeam);
-//            return Optional.of(match);
-//        }
-        return null;
+    public Match getMatchById(Integer id) {
+        Optional<MatchEntity> matchEntity = matchRepository.findById(id);
+        return matchEntity.map(matchMapper::mapFromEntity).orElseThrow(() -> new MyAppException("Match with id: " + id + " does not exist"));
     }
-//    }
 
         @Override
         public void deleteMatchById (Integer id){

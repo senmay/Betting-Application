@@ -1,6 +1,6 @@
 package com.dominik.typer.model.mapper;
 
-import DataForTests.BetProvider;
+import com.dominik.typer.DataForTests.BetProvider;
 import com.dominik.typer.model.Bet;
 import com.dominik.typer.model.entity.BetEntity;
 import com.dominik.typer.model.json.BetJson;

@@ -1,4 +1,4 @@
-package DataForTests;
+package com.dominik.typer.DataForTests;
 
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;

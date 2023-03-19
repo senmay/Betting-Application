@@ -1,7 +1,8 @@
 package com.dominik.typer.model.mapper;
 
-import DataForTests.UserProvider;
+import com.dominik.typer.DataForTests.UserProvider;
 import com.dominik.typer.model.User;
+import com.dominik.typer.model.entity.UserEntity;
 import com.dominik.typer.model.json.UserJson;
 import org.junit.jupiter.api.Test;
 
@@ -10,16 +11,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TestUserMapperProvider implements UserProvider {
-    UserMapper userJsonMapper = new UserMapperImpl();
+    UserMapper userMapper = new UserMapperImpl();
 
     @Test
     void givenUser_whenMapToJson_returnUserJson() {
         //given
         User user = provideUser();
         //when
-        userJsonMapper.mapToJson(user);
+        userMapper.mapToJson(user);
         //then
-        assertThat(userJsonMapper.mapToJson(user))
+        assertThat(userMapper.mapToJson(user))
                 .isNotNull()
                 .hasNoNullFieldsOrProperties();
     }
@@ -29,9 +30,9 @@ class TestUserMapperProvider implements UserProvider {
         //given
         UserJson userJson = provideUserJson();
         //when
-        userJsonMapper.mapFromJson(userJson);
+        userMapper.mapFromJson(userJson);
         //then
-        assertThat(userJsonMapper.mapFromJson(userJson))
+        assertThat(userMapper.mapFromJson(userJson))
                 .isNotNull()
                 .hasNoNullFieldsOrProperties();
     }
@@ -41,11 +42,25 @@ class TestUserMapperProvider implements UserProvider {
         //given
         List<User> userList = provideUserListOfElements(4);
         //when
-        userJsonMapper.mapToUserJsonList(userList);
+        userMapper.mapToUserJsonList(userList);
         //then
-        assertThat(userJsonMapper.mapToUserJsonList(userList))
+        assertThat(userMapper.mapToUserJsonList(userList))
                 .isNotNull()
                 .hasSize(4);
+    }
+    @Test
+    void givenUser_whenMapToUserEntity_returnUserEntity() {
+        //given
+        User user = provideUser();
+        //when
+        userMapper.mapToUserEntity(user);
+        UserEntity userEntity = userMapper.mapToUserEntity(user);
+        System.out.println(user);
+        System.out.println(userEntity);
+        //then
+        assertThat(userMapper.mapToUserEntity(user))
+                .isNotNull()
+                .hasNoNullFieldsOrProperties();
     }
 }
 

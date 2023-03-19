@@ -8,7 +8,6 @@ import java.util.*;
 
 @Profile("cache")
 @Service
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class CacheTeamPersistenceService implements TeamPersistence {
     private final Map<String, Team> teams = new HashMap<>();
 
@@ -18,6 +17,11 @@ public class CacheTeamPersistenceService implements TeamPersistence {
             throw new RuntimeException("Team with name " + team.getName() + " already exists");
         }
         teams.put(team.getName(), team);
+    }
+
+    @Override
+    public Team getTeamById(Integer id) {
+        return null;
     }
 
     @Override

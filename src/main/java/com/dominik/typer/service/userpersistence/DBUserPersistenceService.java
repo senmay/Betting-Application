@@ -31,12 +31,6 @@ public class DBUserPersistenceService implements UserPersistence {
 
     @Override
     public void save(User user) {
-        if (userRepository.existsById(user.getId())) {
-            throw new RuntimeException("User with id " + user.getId() + " already exists");
-        }
-        if (user.getId() == 1) {
-            user.setUserType(UserRole.ADMIN);
-        } else user.setUserType(UserRole.USER);
         userRepository.save(userMapper.mapToUserEntity(user));
     }
 

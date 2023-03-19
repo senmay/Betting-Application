@@ -1,7 +1,7 @@
 package com.dominik.typer.service.matchpersistence;
 
 
-import DataForTests.MatchProvider;
+import com.dominik.typer.DataForTests.MatchProvider;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.MatchEntity;
 import com.dominik.typer.model.mapper.MatchMapper;

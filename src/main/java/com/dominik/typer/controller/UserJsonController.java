@@ -6,6 +6,9 @@ import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.userpersistence.UserService;
+import com.dominik.typer.validators.GeneralValidator;
+import com.dominik.typer.validators.ValidationGroupJson;
+import com.dominik.typer.validators.ValidationGroupPutJson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,10 +26,12 @@ public class UserJsonController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final DbErrorService dbErrorService;
+    private final GeneralValidator validator;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void registerUser(@RequestBody UserJson userJson) {
+        validator.validateObject(userJson, ValidationGroupJson.class);
         userService.saveUser(userMapper.mapFromJson(userJson));
     }
 
@@ -40,11 +45,13 @@ public class UserJsonController {
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
     void registerUserWithAdmin(@RequestHeader("login") String username, @RequestBody UserJson userJson) {
+        validator.validateObject(userJson, ValidationGroupJson.class);
         userService.saveWithAdmin(username, userMapper.mapFromJson(userJson));
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     UserJson getUser(@PathVariable Integer id) {
+        validator.validatePathVariable(id);
         User userJson = userService.getUser(id);
         return userMapper.mapToJson(userJson);
     }
@@ -52,12 +59,15 @@ public class UserJsonController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void updateUser(@PathVariable Integer id, @RequestBody UserJson updatedUser) {
+        validator.validatePathVariable(id);
+        validator.validateObject(updatedUser, ValidationGroupPutJson.class);
         userService.updateUser(id, userMapper.mapFromJson(updatedUser));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void deleteUser(@PathVariable Integer id) {
+        validator.validatePathVariable(id);
         userService.deleteUser(id);
     }
 

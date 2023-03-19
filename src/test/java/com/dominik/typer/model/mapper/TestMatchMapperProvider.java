@@ -1,6 +1,6 @@
 package com.dominik.typer.model.mapper;
 
-import DataForTests.MatchProvider;
+import com.dominik.typer.DataForTests.MatchProvider;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.json.MatchJson;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.dominik.typer.service.betpersistence;
 
-import DataForTests.BetProvider;
-import DataForTests.MatchProvider;
+import com.dominik.typer.DataForTests.BetProvider;
+import com.dominik.typer.DataForTests.MatchProvider;
 import com.dominik.typer.model.Bet;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.BetEntity;

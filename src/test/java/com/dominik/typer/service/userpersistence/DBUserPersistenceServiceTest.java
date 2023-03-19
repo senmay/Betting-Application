@@ -1,9 +1,11 @@
 package com.dominik.typer.service.userpersistence;
 
+import com.dominik.typer.DataForTests.UserProvider;
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.entity.UserEntity;
 import com.dominik.typer.model.mapper.UserMapper;
+import com.dominik.typer.model.mapper.UserMapperImpl;
 import com.dominik.typer.repository.UserRepository;
 import com.dominik.typer.service.adminpersistence.AdminService;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,11 +26,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-class DBUserPersistenceServiceTest {
+class DBUserPersistenceServiceTest implements UserProvider {
     @Mock
     UserService userService;
     @Spy
-    UserMapper userMapper;
+    UserMapper userMapper = new UserMapperImpl();
     @Mock
     UserRepository userRepository;
     @Mock
@@ -97,12 +100,7 @@ class DBUserPersistenceServiceTest {
     void givenUsername_whenGetUserByUsername_returnUser() {
         //given
         String username = "Dominik";
-        User expectedUser = User.builder()
-                .id(1)
-                .username("Dominik")
-                .points(0)
-                .email("dom@wp.pl")
-                .build();
+        User expectedUser = provideUser();
         UserEntity userEntity = userMapper.mapToUserEntity(expectedUser);
         given(userRepository.getByUsername(username)).willReturn(Optional.of(userEntity));
         //when
@@ -141,6 +139,7 @@ class DBUserPersistenceServiceTest {
                 .points(0)
                 .email("dom@wp.pl")
                 .userType(UserRole.USER)
+                .balance(BigDecimal.ZERO)
                 .build();
         given(adminService.isAdmin("Dominik")).willReturn(true);
         ArgumentCaptor<UserEntity> captor = ArgumentCaptor.forClass(UserEntity.class);

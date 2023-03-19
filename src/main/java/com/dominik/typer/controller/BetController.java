@@ -19,10 +19,6 @@ public class BetController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createBet(@RequestBody BetJson betJson) {
-        //validator.validate(betJson);
-
-
-
         betService.saveBet(betMapper.mapFromBetJson(betJson));
     }
 

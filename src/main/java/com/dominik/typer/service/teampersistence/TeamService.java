@@ -10,6 +10,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamPersistence teamPersistence;
+    public Team getTeamById(Integer id) {
+        return teamPersistence.getTeamById(id);
+    }
     public Team getTeamByName(String name) {
         return teamPersistence.getTeamByName(name);
     }
@@ -26,5 +29,5 @@ public class TeamService {
     public void updateTeam(String name, Team team) {
         teamPersistence.updateTeamByName(name, team);
     }
+    }
 
-}

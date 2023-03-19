@@ -1,6 +1,7 @@
 package com.dominik.typer.service.userpersistence;
 
 import com.dominik.typer.model.User;
+import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 @Slf4j
 public class UserService {
     private final UserPersistence userPersistence;
+    private final TeamService teamService;
     public void saveUser(final User user) {
         userPersistence.save(user);
     }
