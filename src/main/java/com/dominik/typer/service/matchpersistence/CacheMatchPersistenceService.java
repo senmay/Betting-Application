@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 @Service
 @Profile("cache")
 public class CacheMatchPersistenceService implements MatchPersistance{
@@ -39,13 +38,13 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     }
 
     @Override
-    public Optional<Match> getMatchById(Integer id) {
+    public Match getMatchById(Integer id) {
         if (!matchMap.containsKey(id)) {
             throw new RuntimeException("Match with id: " + id + " does not exist");
         }
         return matchMap.values().stream()
                 .filter(match -> match.getId().equals(id))
-                .findFirst();
+                .findFirst().orElse(null);
     }
 
     @Override
