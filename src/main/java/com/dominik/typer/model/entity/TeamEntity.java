@@ -17,6 +17,7 @@ public class TeamEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private Boolean inactive;
 
     @Override
     public boolean equals(Object o) {

@@ -30,16 +30,15 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public void save(User user) {
+    public void saveAdmin(User user) {
+        user.setUserType(UserRole.ADMIN);
         userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
     public void saveWithAdmin(String username, User user) {
-        if (adminService.isAdmin(username)) {
-            user.setUserType(UserRole.USER);
-            userRepository.save(userMapper.mapToUserEntity(user));
-        }
+        user.setUserType(UserRole.USER);
+        userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
@@ -48,16 +47,16 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public Optional<User> getUserById(Integer id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with id " + id));
+        return userEntity.map(userMapper::mapToUser);
 
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public Optional<User> getUserByUsername(String username) {
         Optional<UserEntity> userEntity = userRepository.getByUsername(username);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with username " + username));
+        return userEntity.map(userMapper::mapToUser);
     }
 
     @Override
