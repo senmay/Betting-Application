@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/match")
@@ -41,6 +42,14 @@ public class MatchController {
         return matchMapper.mapToList(matchList);
     }
 
+    @GetMapping("/byTeam/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    List<MatchJson> getAllMatchesByTeamId(@PathVariable Integer id)
+    {
+        List<Match> matchList = matchService.getMatchesByTeamId(id);
+        return matchMapper.mapToList(matchList);
+    }
+
     @GetMapping("/toBet")
     @ResponseStatus(HttpStatus.OK)
     List<MatchJson> getAllMatchesPossibleToBet()
@@ -50,10 +59,10 @@ public class MatchController {
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    MatchJson getMatch(@PathVariable Integer id)
+    Optional<MatchJson> getMatch(@PathVariable Integer id)
     {
-        Match match = matchService.getMatch(id);
-        return matchMapper.map(match);
+        Optional<Match> match = matchService.getMatch(id);
+        return match.map(matchMapper::map);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -9,8 +9,6 @@ import java.util.List;
 
 @Mapper
 public interface MatchMapper {
-
-
     MatchJson map(Match match);
     Match mapFromJson(MatchJson matchJson);
     List<Match> mapFromListJson(List<MatchJson> matchJsonList);

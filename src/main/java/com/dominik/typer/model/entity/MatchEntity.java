@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -22,7 +22,7 @@ public class MatchEntity {
     private Integer id;
     private Integer homeTeamId;
     private Integer awayTeamId;
-    private LocalDate dateOfEvent;
+    private LocalDateTime dateOfEvent;
     private Double oddsForHomeTeam;
     private Double oddsForDraw;
     private Double oddsForAwayTeam;
