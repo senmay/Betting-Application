@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,16 @@ public class CacheUserPersistenceService implements UserPersistence {
     @Override
     public Optional<User> getUserByUsername(String username) {
         return null;
+    }
+
+    @Override
+    public void updateBalance(Integer id, BigDecimal balance) {
+        if (!data.containsKey(id)) {
+            throw new RuntimeException("No user with id " + id);
+        }
+        User user = data.get(id);
+        user.setBalance(user.getBalance().add(balance));
+        data.put(id, user);
     }
 
 }

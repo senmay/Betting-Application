@@ -20,6 +20,5 @@ public class Match {
     private Double oddsForHomeTeam;
     private Double oddsForDraw;
     private Double oddsForAwayTeam;
-    private Boolean isFinished;
     private Integer matchResultId;
 }

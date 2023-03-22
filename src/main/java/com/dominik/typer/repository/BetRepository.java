@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BetRepository extends JpaRepository<BetEntity, Integer> {
     List<BetEntity> findAllByUserId(Integer id);
+    List<BetEntity> findAllByMatchId(Integer id);
 }
