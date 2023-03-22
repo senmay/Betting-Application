@@ -4,7 +4,6 @@ import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.MatchEntity;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.repository.MatchRepository;
-import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class DbMatchPersistenceService implements MatchPersistance {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
-    private final TeamService teamService;
     @Override
     public void save(Match match) {
         matchRepository.save(matchMapper.mapToEntity(match));

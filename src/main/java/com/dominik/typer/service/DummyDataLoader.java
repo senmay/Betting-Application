@@ -37,11 +37,11 @@ public class DummyDataLoader {
         Match match1 = Match.builder().id(1).homeTeamId(1)
                 .awayTeamId(2).oddsForAwayTeam(1.00).oddsForHomeTeam(1.00)
                 .oddsForDraw(1.00).dateOfEvent(LocalDateTime.now().plusDays(1))
-                .isFinished(false).matchResultId(0).build();
+                .matchResultId(0).build();
         Match match2 = Match.builder().id(2).homeTeamId(2)
                 .awayTeamId(1).oddsForAwayTeam(3.00).oddsForHomeTeam(1.00)
                 .oddsForDraw(1.00).dateOfEvent(LocalDateTime.now().plusDays(2))
-                .isFinished(false).matchResultId(0).build();
+                .matchResultId(0).build();
         matchPersistence.save(match1);
         matchPersistence.save(match2);
         System.out.println("Loaded data into database.");

@@ -26,7 +26,5 @@ public class MatchJson {
     Double oddsForHomeTeam;
     Double oddsForDraw;
     Double oddsForAwayTeam;
-    @NotNull(groups = {ValidationGroupJson.class})
-    Boolean isFinished;
     Integer matchResultId;
 }

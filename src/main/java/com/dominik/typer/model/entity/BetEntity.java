@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
@@ -22,6 +24,6 @@ public class BetEntity {
     Integer userId;
     Integer pointsFromBetEvent;
     BetType betType;
-    Integer betAmount;
+    BigDecimal betAmount;
 
 }

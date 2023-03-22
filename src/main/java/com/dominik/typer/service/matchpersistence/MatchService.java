@@ -3,6 +3,7 @@ package com.dominik.typer.service.matchpersistence;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.Team;
 import com.dominik.typer.model.exceptions.MyAppException;
+import com.dominik.typer.repository.TeamRepository;
 import com.dominik.typer.service.adminpersistence.AdminService;
 import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class MatchService {
     private final MatchPersistance matchPersistance;
     private final TeamService teamService;
     private final AdminService adminService;
+    private final TeamRepository teamRepository;
 
     public void saveMatchWithAdmin(String username, Match match) {
         adminService.isAdmin(username);
@@ -51,6 +53,7 @@ public class MatchService {
     }
 
     private void validateTeamsExists(Integer homeTeamId, Integer awayTeamId) {
+        //todo use existsById
         Team homeTeam = teamService.getTeamById(homeTeamId);
         Team awayTeam = teamService.getTeamById(awayTeamId);
         if (homeTeam == null || awayTeam == null) {

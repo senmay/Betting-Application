@@ -6,7 +6,6 @@ import com.dominik.typer.model.json.MatchJson;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.matchpersistence.MatchService;
-import com.dominik.typer.service.teampersistence.TeamService;
 import com.dominik.typer.validators.GeneralValidator;
 import com.dominik.typer.validators.ValidationGroupJson;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MatchController {
     private final MatchService matchService;
-    private final TeamService teamService;
     private final DbErrorService dbErrorService;
     private final MatchMapper matchMapper;
     private final GeneralValidator validator;
