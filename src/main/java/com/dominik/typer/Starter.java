@@ -1,38 +1,28 @@
 package com.dominik.typer;
 
-import jakarta.annotation.PostConstruct;
-import lombok.Data;
+import com.dominik.typer.events.MyCustomEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
-@Data
 public class Starter {
+
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
 
     public static void main(String[] args) {
         SpringApplication.run(Starter.class, args);
     }
 
-    @PostConstruct
-    public void method() {
-        Annotation[] annotations = Starter.class.getAnnotations();
-        System.out.println(Arrays.toString(annotations));
-    }
+    @EventListener(ApplicationReadyEvent.class)
+    public void are() {
+        System.out.println("Jestem w ApplicationReadyEvent");
 
-    /**
-     * Tworzysz użytkownika - Admin
-     * Admin tworzy dwóch użytkowników
-     * Admin tworzy dwie drużyny
-     * admin tworzy Mecz
-     * Użytkownik A = stawia mecz zwyciestwo 1
-     * Użytkownik B = stawia mecz zwyciestwo 2
-     * Admin konczy mecz (zwyciestwo 2)
-     * ...
-     * Uzytkownik A - nic nie dostaje
-     * Uzytkownik B - dostaje kase, 1 pkt
-     * ...
-     */
+        MyCustomEvent myCustomEvent = new MyCustomEvent(Starter.class, 123);
+        applicationEventPublisher.publishEvent(myCustomEvent);
+    }
 }
