@@ -1,53 +1,42 @@
 package com.dominik.typer.controller;
 
-import DataForTests.ProvideUser;
+import com.dominik.typer.DataForTests.UserProvider;
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.json.UserJson;
+import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.service.DbErrorService;
-import com.dominik.typer.service.userPersistence.UserService;
+import com.dominik.typer.service.userpersistence.UserService;
+import com.dominik.typer.validators.GeneralValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.BDDMockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(controllers = { UserJsonController.class, UserMapper.class} )
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-class UserJsonControllerTest implements ProvideUser{
+@WebMvcTest(controllers = {UserJsonController.class, UserMapper.class})
+class UserJsonControllerTest implements UserProvider {
 
     @MockBean
     UserService userService;
     @Autowired
     ObjectMapper objectMapper;
-
     @MockBean
     DbErrorService dbErrorService;
-
-    @LocalServerPort
-    private int port;
-
+    @MockBean
+    GeneralValidator validator;
     @Autowired
     private MockMvc mockMvc;
-
-    @PostConstruct
-    public void init() {
-        String uri = "http://localhost:" + port;
-    }
-
 
     @Test
     void givenUser_whenGetAllUsers_returnUsers() throws Exception {
@@ -67,11 +56,15 @@ class UserJsonControllerTest implements ProvideUser{
     void givenUser_whenGetUser_returnUser() throws Exception {
         User u = new User(1, "A", 10, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
         when(userService.getUser(1)).thenReturn(u);
-        mockMvc.perform(get("/user/1"))
+        String contentAsString = mockMvc.perform(get("/user/1"))
                 .andExpect(status().is(200))
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(jsonPath("$.id", Matchers.equalTo(1)))
-                .andExpect(jsonPath("$.points", Matchers.equalTo(10)));
+                .andExpect(jsonPath("$.points", Matchers.equalTo(10)))
+                .andReturn().getResponse().getContentAsString();
+
+        UserJson userJson = objectMapper.readValue(contentAsString, UserJson.class);
+        // obiekt
     }
 
     @Test

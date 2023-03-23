@@ -1,24 +1,31 @@
 package com.dominik.typer.model.json;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.dominik.typer.validators.DifferentTeamIds;
+import com.dominik.typer.validators.ValidationGroupJson;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Value
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
+@DifferentTeamIds(groups = {ValidationGroupJson.class})
 public class MatchJson {
+
     Integer id;
+    @NotNull(groups = {ValidationGroupJson.class})
     Integer homeTeamId;
+    @NotNull(groups = {ValidationGroupJson.class})
     Integer awayTeamId;
-    Date dateOfEvent;
+    @NotNull(groups = {ValidationGroupJson.class})
+    LocalDate dateOfEvent;
     Double oddsForHomeTeam;
     Double oddsForDraw;
     Double oddsForAwayTeam;
-    boolean isFinished;
+    @NotNull(groups = {ValidationGroupJson.class})
+    Boolean isFinished;
     Integer matchResultId;
 }

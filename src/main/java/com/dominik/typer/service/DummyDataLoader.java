@@ -1,10 +1,9 @@
 package com.dominik.typer.service;
 
-import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
-import com.dominik.typer.service.matchPersistence.MatchPersistance;
-import com.dominik.typer.service.teamPersistence.TeamPersistence;
-import com.dominik.typer.service.userPersistence.UserPersistence;
+import com.dominik.typer.service.matchpersistence.MatchPersistance;
+import com.dominik.typer.service.teampersistence.TeamPersistence;
+import com.dominik.typer.service.userpersistence.UserPersistence;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

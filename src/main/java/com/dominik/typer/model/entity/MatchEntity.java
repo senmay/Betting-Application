@@ -5,10 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.hibernate.Hibernate;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -24,11 +22,11 @@ public class MatchEntity {
     private Integer id;
     private Integer homeTeamId;
     private Integer awayTeamId;
-    private Date dateOfEvent;
+    private LocalDate dateOfEvent;
     private Double oddsForHomeTeam;
     private Double oddsForDraw;
     private Double oddsForAwayTeam;
-    private boolean isFinished;
+    private Boolean isFinished;
     private Integer matchResultId;
 
     @Override

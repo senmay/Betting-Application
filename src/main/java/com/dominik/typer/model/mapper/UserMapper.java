@@ -4,6 +4,8 @@ import com.dominik.typer.model.User;
 import com.dominik.typer.model.entity.UserEntity;
 import com.dominik.typer.model.json.UserJson;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
@@ -11,30 +13,13 @@ import java.util.List;
 public interface UserMapper {
     List<UserEntity> mapToListUserEntity(List<User> users);
     List<User> mapToListUser(List<UserEntity> usersEntity);
-
-    default User mapToUser(UserEntity userEntity){
-        return User.builder()
-                .id(userEntity.getId())
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .points(userEntity.getPoints())
-                .userType(userEntity.getUserRole())
-                .build();
-    }
-    default UserEntity mapToUserEntity(User user){
-        return UserEntity.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .points(user.getPoints())
-                .userRole(user.getUserType())
-                .build();
-    }
+    User mapToUser(UserEntity userEntity);
+    UserEntity mapToUserEntity(User user);
     UserJson mapToJson(User user);
+    @Mapping(target="points", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0")
+    @Mapping(target="balance", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0.00")
+    @Mapping(target="userType", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "USER")
     User mapFromJson(UserJson userJson);
     List<User> mapFromListJson(List<UserJson> userJsonList);
     List<UserJson> mapToUserJsonList(List<User> userList);
-
-
-
 }

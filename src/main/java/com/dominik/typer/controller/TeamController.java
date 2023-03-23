@@ -5,7 +5,7 @@ import com.dominik.typer.model.exceptions.DbError;
 import com.dominik.typer.model.json.TeamJson;
 import com.dominik.typer.model.mapper.TeamMapper;
 import com.dominik.typer.service.DbErrorService;
-import com.dominik.typer.service.teamPersistence.TeamService;
+import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

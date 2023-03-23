@@ -16,5 +16,5 @@ public class User {
     private Integer points;
     private String email;
     private BigDecimal balance;
-    private UserRole userType;
+    private UserRole userType ;
 }
