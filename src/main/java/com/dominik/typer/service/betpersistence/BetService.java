@@ -24,6 +24,7 @@ public class BetService {
         checkIfUserHasMoneyForBet(userService.getUser(bet.getUserId()).get().getUsername(), bet.getBetAmount());
         BigDecimal negateValue = bet.getBetAmount().negate();
         userService.updateBalance(bet.getUserId(), negateValue);
+
         betPersistence.saveBet(bet);
     }
 

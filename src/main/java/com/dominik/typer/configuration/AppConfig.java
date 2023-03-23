@@ -8,9 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @PropertySource(value = "classpath:database.properties", ignoreResourceNotFound = true)
-@PropertySource(value = "classpath:hi3.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "classpath:myapp.properties", ignoreResourceNotFound = true)
-@PropertySource(value = "classpath:userpagesize.properties", ignoreResourceNotFound = true)
 @EnableConfigurationProperties
 @EnableAsync
 @EnableAspectJAutoProxy
