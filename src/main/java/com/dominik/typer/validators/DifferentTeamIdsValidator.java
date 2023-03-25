@@ -5,24 +5,20 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 
-public class DifferentTeamIdsValidator implements ConstraintValidator<DifferentTeamIds, Object> {
+public class DifferentTeamIdsValidator implements ConstraintValidator<DifferentTeamIds, MatchJson> {
 
     @Override
     public void initialize(DifferentTeamIds constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(Object matchJson, ConstraintValidatorContext context) {
+    public boolean isValid(MatchJson matchJson, ConstraintValidatorContext context) {
         if (matchJson == null) {
             return true;
         }
 
-        if (matchJson instanceof MatchJson m) {
-            return m.getHomeTeamId() != null
-                    && m.getAwayTeamId() != null
-                    && !m.getHomeTeamId().equals(m.getAwayTeamId());
-        }
-
-        return false;
+        return matchJson.getHomeTeamId() != null
+                && matchJson.getAwayTeamId() != null
+                && !matchJson.getHomeTeamId().equals(matchJson.getAwayTeamId());
     }
 }

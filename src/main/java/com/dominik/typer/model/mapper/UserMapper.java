@@ -11,15 +11,15 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Mapping(target="points", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0")
-    @Mapping(target="balance", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0.00")
-    @Mapping(target="userType", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "USER")
-    User mapFromJson(UserJson userJson);
     List<UserEntity> mapToListUserEntity(List<User> users);
     List<User> mapToListUser(List<UserEntity> usersEntity);
     User mapToUser(UserEntity userEntity);
     UserEntity mapToUserEntity(User user);
     UserJson mapToJson(User user);
+    @Mapping(target="points", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0")
+    @Mapping(target="balance", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "0.00")
+    @Mapping(target="userType", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, defaultValue = "USER")
+    User mapFromJson(UserJson userJson);
     List<User> mapFromListJson(List<UserJson> userJsonList);
     List<UserJson> mapToUserJsonList(List<User> userList);
 }

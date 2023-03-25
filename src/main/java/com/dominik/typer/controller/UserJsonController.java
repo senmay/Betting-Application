@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -28,6 +27,14 @@ public class UserJsonController {
     private final UserMapper userMapper;
     private final DbErrorService dbErrorService;
     private final GeneralValidator validator;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    void registerUser(@RequestBody UserJson userJson) {
+        validator.validateObject(userJson, ValidationGroupJson.class);
+        userService.saveUser(userMapper.mapFromJson(userJson));
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     List<UserJson> getAllUsers() {
@@ -43,9 +50,10 @@ public class UserJsonController {
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    Optional<UserJson> getUser(@PathVariable Integer id) {
-        Optional<User> user = userService.getUser(id);
-        return user.map(userMapper::mapToJson);
+    UserJson getUser(@PathVariable Integer id) {
+        validator.validatePathVariable(id);
+        User userJson = userService.getUser(id);
+        return userMapper.mapToJson(userJson);
     }
 
     @PutMapping("/{id}")

@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @Value
 @Builder
 public class UserJson {
-    @Null(groups = {ValidationGroupJson.class})
     Integer id;
     @Length(min = 4, max = 20, groups = {ValidationGroupJson.class})
     String username;

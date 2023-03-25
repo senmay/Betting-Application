@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,5 +16,5 @@ public class Bet {
     Integer userId;
     Integer pointsFromBetEvent;
     BetType betType;
-    BigDecimal betAmount;
+    Integer betAmount;
 }

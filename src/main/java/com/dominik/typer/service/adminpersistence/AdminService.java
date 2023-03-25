@@ -1,6 +1,7 @@
 package com.dominik.typer.service.adminpersistence;
 
 import com.dominik.typer.enumerations.UserRole;
+import com.dominik.typer.model.User;
 import com.dominik.typer.model.entity.UserEntity;
 import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.repository.UserRepository;
@@ -12,8 +13,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class AdminService {
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
+    public void isAdmin(final User user){
+        if (!user.getUserType().equals(UserRole.ADMIN)) {
+            throw new MyAppException("User is not an admin: " + user.getUsername());
+        }
+    }
     public boolean isAdmin(final String username){
         UserEntity user = userRepository.getByUsername(username)
                 .orElseThrow(() -> new MyAppException("User not found: " + username));
@@ -22,8 +28,6 @@ public class AdminService {
         }
         return true;
     }
-    // if database is empty then first user is admin
-    public boolean checkIfEmpty() {
-        return userRepository.findAll().isEmpty();
-    }
+
+
 }

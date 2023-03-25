@@ -6,6 +6,7 @@ import com.dominik.typer.model.json.MatchJson;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.matchpersistence.MatchService;
+import com.dominik.typer.service.teampersistence.TeamService;
 import com.dominik.typer.validators.GeneralValidator;
 import com.dominik.typer.validators.ValidationGroupJson;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/match")
 @RequiredArgsConstructor
 public class MatchController {
     private final MatchService matchService;
+    private final TeamService teamService;
     private final DbErrorService dbErrorService;
     private final MatchMapper matchMapper;
     private final GeneralValidator validator;
@@ -40,14 +41,6 @@ public class MatchController {
         return matchMapper.mapToList(matchList);
     }
 
-    @GetMapping("/byTeam/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    List<MatchJson> getAllMatchesByTeamId(@PathVariable Integer id)
-    {
-        List<Match> matchList = matchService.getMatchesByTeamId(id);
-        return matchMapper.mapToList(matchList);
-    }
-
     @GetMapping("/toBet")
     @ResponseStatus(HttpStatus.OK)
     List<MatchJson> getAllMatchesPossibleToBet()
@@ -57,10 +50,10 @@ public class MatchController {
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    Optional<MatchJson> getMatch(@PathVariable Integer id)
+    MatchJson getMatch(@PathVariable Integer id)
     {
-        Optional<Match> match = matchService.getMatch(id);
-        return match.map(matchMapper::map);
+        Match match = matchService.getMatch(id);
+        return matchMapper.map(match);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

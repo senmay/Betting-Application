@@ -2,13 +2,14 @@ package com.dominik.typer.service.matchpersistence;
 
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.MatchEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.repository.MatchRepository;
+import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class DbMatchPersistenceService implements MatchPersistance {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
+    private final TeamService teamService;
     @Override
     public void save(Match match) {
         matchRepository.save(matchMapper.mapToEntity(match));
@@ -39,20 +41,9 @@ public class DbMatchPersistenceService implements MatchPersistance {
     }
 
     @Override
-    public List<Match> getMatchesByTeamIdWithinTimeRange(Integer id, LocalDateTime startTime, LocalDateTime endTime) {
-        List<MatchEntity> matchEntityList = matchRepository.findMatchesForTeamWithinTimeRange(id, startTime, endTime);
-        return matchMapper.mapToListMatch(matchEntityList);
-    }
-
-    @Override
-    public List<Match> getAllMatchesByTeamId(Integer id) {
-        List<MatchEntity> matchEntityList = matchRepository.getAllMatchesByTeamId(id);
-        return matchMapper.mapToListMatch(matchEntityList);
-    }
-    @Override
-    public Optional<Match> getMatchById(Integer id) {
+    public Match getMatchById(Integer id) {
         Optional<MatchEntity> matchEntity = matchRepository.findById(id);
-        return matchEntity.map(matchMapper::mapFromEntity);
+        return matchEntity.map(matchMapper::mapFromEntity).orElseThrow(() -> new MyAppException("Match with id: " + id + " does not exist"));
     }
 
         @Override
@@ -65,8 +56,19 @@ public class DbMatchPersistenceService implements MatchPersistance {
 
         @Override
         public void updateMatchById (Integer id, Match match){
-        //TODO
         }
-
+//        if (!matchRepository.existsById(id)) {
+//            throw new RuntimeException("Match with id: " + id + " does not exist");
+//        }
+//        Optional<MatchEntity> matchEntity = matchRepository.findById(id);
+//        Team homeTeam = match.getHomeTeam();
+//        Team awayTeam = match.getAwayTeam();
+//        Match updatedMatch = matchEntityMapper.map(matchEntity.get(), homeTeam, awayTeam);
+//        updatedMatch.setHomeTeam(match.getHomeTeam());
+//        updatedMatch.setAwayTeam(match.getAwayTeam());
+//        updatedMatch.setHomeTeamGoals(match.getHomeTeamGoals());
+//        updatedMatch.setAwayTeamGoals(match.getAwayTeamGoals());
+//        matchRepository.save(matchEntityMapper.mapToMatchEntity(updatedMatch));
+//    }
     }
 

@@ -18,8 +18,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -51,7 +53,7 @@ class DBUserPersistenceServiceTest implements UserProvider {
         given(userRepository.existsById(1)).willReturn(false);
         given(userRepository.save(userEntity)).willReturn(userEntity);
         //when
-        dbUserPersistenceService.saveAdmin(user);
+        dbUserPersistenceService.save(user);
         //then
         assertThat(user.getUserType()).isEqualTo(UserRole.ADMIN);
     }
@@ -70,44 +72,44 @@ class DBUserPersistenceServiceTest implements UserProvider {
         given(userRepository.existsById(2)).willReturn(false);
         given(userRepository.save(userEntity)).willReturn(userEntity);
         //when
-        dbUserPersistenceService.saveAdmin(user);
+        dbUserPersistenceService.save(user);
         //then
         assertThat(user.getUserType()).isEqualTo(UserRole.USER);
     }
 
-//    @Test
-//    @DisplayName("Given user json when register user with existing id then throw exception")
-//    void givenUserJson_whenRegisterUserWithExistingId_thenThrowException() {
-//        //given
-//        User user = User.builder()
-//                .id(1)
-//                .username("Dominik")
-//                .points(0)
-//                .email("dom@Gmail.com")
-//                .build();
-//        given(userRepository.existsById(1)).willReturn(true);
-//        //then
-//        assertThatThrownBy(() -> dbUserPersistenceService.save(user))
-//                .isInstanceOf(RuntimeException.class)
-//                .hasMessageContaining("User with id " + user.getId() + " already exists");
-//
-//    }
+    @Test
+    @DisplayName("Given user json when register user with existing id then throw exception")
+    void givenUserJson_whenRegisterUserWithExistingId_thenThrowException() {
+        //given
+        User user = User.builder()
+                .id(1)
+                .username("Dominik")
+                .points(0)
+                .email("dom@Gmail.com")
+                .build();
+        given(userRepository.existsById(1)).willReturn(true);
+        //then
+        assertThatThrownBy(() -> dbUserPersistenceService.save(user))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("User with id " + user.getId() + " already exists");
 
-//    @Test
-//    @DisplayName("Given String username get user by username")
-//    void givenUsername_whenGetUserByUsername_returnUser() {
-//        //given
-//        String username = "Dominik";
-//        User expectedUser = provideUser();
-//        UserEntity userEntity = userMapper.mapToUserEntity(expectedUser);
-//        given(userRepository.getByUsername(username)).willReturn(Optional.of(userEntity));
-//        //when
-//        User actualUser = dbUserPersistenceService.getUserByUsername(username);
-//        //then
-//        assertThat(actualUser)
-//                .isNotNull()
-//                .isEqualTo(expectedUser);
-//    }
+    }
+
+    @Test
+    @DisplayName("Given String username get user by username")
+    void givenUsername_whenGetUserByUsername_returnUser() {
+        //given
+        String username = "Dominik";
+        User expectedUser = provideUser();
+        UserEntity userEntity = userMapper.mapToUserEntity(expectedUser);
+        given(userRepository.getByUsername(username)).willReturn(Optional.of(userEntity));
+        //when
+        User actualUser = dbUserPersistenceService.getUserByUsername(username);
+        //then
+        assertThat(actualUser)
+                .isNotNull()
+                .isEqualTo(expectedUser);
+    }
     @Test
     @DisplayName("If user is not an admin don't save user")
     void givenUser_whenSaveWithAdmin_returnNothing() {

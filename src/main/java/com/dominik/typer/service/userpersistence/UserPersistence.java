@@ -2,18 +2,15 @@ package com.dominik.typer.service.userpersistence;
 
 import com.dominik.typer.model.User;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserPersistence {
 
-    void saveAdmin(User user);
+    void save(User user);
     void saveWithAdmin(String username, User user);
     List<User> getAllUsers();
-    Optional<User> getUserById(Integer id);
+    User getUserById(Integer id);
     void deleteUserById(Integer id);
     void updateUserById(Integer id, User user);
-    Optional<User> getUserByUsername(String username);
-    void updateBalance(Integer id, BigDecimal balance);
+    User getUserByUsername(String username);
 }

@@ -1,16 +1,13 @@
 package com.dominik.typer.service.matchpersistence;
 
 import com.dominik.typer.model.Match;
-import com.dominik.typer.model.exceptions.MyAppException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 @Service
 @Profile("cache")
 public class CacheMatchPersistenceService implements MatchPersistance{
@@ -37,16 +34,6 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     }
 
     @Override
-    public List<Match> getAllMatchesByTeamId(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Match> getMatchesByTeamIdWithinTimeRange(Integer id, LocalDateTime startTime, LocalDateTime endTime) {
-        return null;
-    }
-
-    @Override
     public List<Match> getAllMatches() {
         return matchMap.values().stream().toList();
     }
@@ -54,7 +41,7 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     @Override
     public Optional<Match> getMatchById(Integer id) {
         if (!matchMap.containsKey(id)) {
-            throw new MyAppException("Match with id: " + id + " does not exist");
+            throw new RuntimeException("Match with id: " + id + " does not exist");
         }
         return matchMap.values().stream()
                 .filter(match -> match.getId().equals(id))
@@ -64,7 +51,7 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     @Override
     public void deleteMatchById(Integer id) {
         if (!matchMap.containsKey(id)) {
-            throw new MyAppException("Match with id: " + id + " does not exist");
+            throw new RuntimeException("Match with id: " + id + " does not exist");
         }
         matchMap.remove(id);
     }
