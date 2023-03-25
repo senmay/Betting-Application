@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +40,10 @@ class UserJsonControllerTest implements UserProvider {
 
     @Test
     void givenUser_whenGetAllUsers_returnUsers() throws Exception {
-        User u = new User(1, "A", 10, "a@wp.pl", BigDecimal.ZERO, UserRole.USER);
-        User u2 = new User(2, "B", 20, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
+        //given
+        User u = new User(1, "A", 10, "a@wp.pl", 100.00, UserRole.USER);
+        User u2 = new User(2, "B", 20, "b@wp.pl", 50.00, UserRole.USER);
+
         when(userService.getUsers()).thenReturn(List.of(u, u2));
         mockMvc.perform(get("/user"))
                 .andExpect(status().is(200))
@@ -55,49 +56,59 @@ class UserJsonControllerTest implements UserProvider {
 
     @Test
     void givenUser_whenGetUser_returnUser() throws Exception {
-        User u = new User(1, "A", 10, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
+        //given
+        User u = new User(1, "A", 10, "b@wp.pl", 100.00, UserRole.USER);
         when(userService.getUser(1)).thenReturn(Optional.of(u));
-        String contentAsString = mockMvc.perform(get("/user/1"))
+        mockMvc.perform(get("/user/1"))
                 .andExpect(status().is(200))
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(jsonPath("$.id", Matchers.equalTo(1)))
                 .andExpect(jsonPath("$.points", Matchers.equalTo(10)))
                 .andReturn().getResponse().getContentAsString();
-
-        UserJson userJson = objectMapper.readValue(contentAsString, UserJson.class);
-        // obiekt
     }
 
     @Test
-    void givenUserJson_whenRegisterUser_returnStatus201() throws Exception{
+    void givenUserJson_whenRegisterUser_returnStatus201() throws Exception {
         //given
-        UserJson u = UserJson.builder().id(1).username("A").email("domwp.pl").points(10).build();
+        UserJson u = UserJson.builder().id(1).username("A").email("dom@wp.pl").points(10).build();
         String userjson = objectMapper.writeValueAsString(u);
         //when and then
         mockMvc.perform(post("/user")
-                .contentType("application/json")
-                .content(userjson))
+                        .contentType("application/json")
+                        .content(userjson))
                 .andExpect(status().isCreated());
     }
+
     @Test
-    void givenMissingBody_thenReturns404() throws Exception{
-       mockMvc.perform(post("/user")
-                .contentType("application/json"))
+    void givenMissingBody_thenReturns404() throws Exception {
+        mockMvc.perform(post("/user")
+                        .contentType("application/json"))
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
 
     @Test
-    void givenHeaderAndBody_whenRegisterUserWithAdmin_thenSave() throws Exception{
+    void givenHeaderAndBody_whenRegisterUserWithAdmin_thenSave() throws Exception {
         //given
         UserJson u = UserJson.builder().id(1).username("A").email("domwp.pl").points(10).build();
         String userJson = objectMapper.writeValueAsString(u);
         //when and then
         mockMvc.perform(post("/user/admin")
-                .contentType("application/json")
-                .header("login", "Admin")
-                .content(userJson))
+                        .contentType("application/json")
+                        .header("login", "Admin")
+                        .content(userJson))
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    void givenUserJson_whenUpdateBalance_returnStatus200() throws Exception {
+        //given
+        UserJson u = provideUserJson();
+        String userjson = objectMapper.writeValueAsString(u);
+        //when and then
+        mockMvc.perform(post("/user/balance")
+                        .contentType("application/json")
+                        .content(userjson))
+                .andExpect(status().isCreated());
+    }
 }

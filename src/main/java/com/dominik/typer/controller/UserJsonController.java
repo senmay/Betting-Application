@@ -37,9 +37,9 @@ public class UserJsonController {
 
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    void registerUserWithAdmin(@RequestHeader("login") String username, @RequestBody UserJson userJson) {
+    void saveUser(@RequestHeader("login") String username, @RequestBody UserJson userJson) {
         validator.validateObject(userJson, ValidationGroupJson.class);
-        userService.saveWithAdmin(username, userMapper.mapFromJson(userJson));
+        userService.saveUser(username, userMapper.mapFromJson(userJson));
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -51,7 +51,6 @@ public class UserJsonController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void updateUser(@PathVariable Integer id, @RequestBody UserJson updatedUser) {
-        validator.validatePathVariable(id);
         validator.validateObject(updatedUser, ValidationGroupPutJson.class);
         userService.updateUser(id, userMapper.mapFromJson(updatedUser));
     }
@@ -63,7 +62,7 @@ public class UserJsonController {
         userService.deleteUser(id);
     }
 
-    @PostMapping
+    @PostMapping("/balance")
     @ResponseStatus(HttpStatus.CREATED)
     void updateBalance(@RequestBody UserJson userJson) {
         userService.updateBalance(userJson.getId(), userJson.getBalance());

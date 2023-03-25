@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserPersistence {
 
     void saveAdmin(User user);
-    void saveWithAdmin(String username, User user);
+    void saveUser(User user);
     List<User> getAllUsers();
     Optional<User> getUserById(Integer id);
     void deleteUserById(Integer id);

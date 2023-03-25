@@ -26,7 +26,7 @@ public class CacheUserPersistenceService implements UserPersistence {
 
     //TODO  implement
     @Override
-    public void saveWithAdmin(String username, User user) {
+    public void saveUser(User user) {
 
     }
 

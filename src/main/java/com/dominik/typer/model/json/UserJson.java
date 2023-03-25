@@ -18,8 +18,9 @@ public class UserJson {
     @Length(min = 4, max = 20, groups = {ValidationGroupJson.class})
     String username;
     @Min(value = 0, groups = {ValidationGroupBusinessLogic.class})
+    @Null(groups = {ValidationGroupJson.class})
     Integer points;
-    @NotNull(groups = {ValidationGroupBusinessLogic.class})
+    @Null(groups = {ValidationGroupBusinessLogic.class})
     @Digits(integer = 10, fraction = 2, groups = {ValidationGroupBusinessLogic.class})
     Double balance;
     @NotNull(groups = {ValidationGroupBusinessLogic.class})

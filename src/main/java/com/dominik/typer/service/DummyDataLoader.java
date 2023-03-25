@@ -3,7 +3,7 @@ package com.dominik.typer.service;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.Team;
 import com.dominik.typer.model.User;
-import com.dominik.typer.service.matchpersistence.MatchPersistance;
+import com.dominik.typer.service.matchpersistence.MatchPersistence;
 import com.dominik.typer.service.teampersistence.TeamPersistence;
 import com.dominik.typer.service.userpersistence.UserPersistence;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class DummyDataLoader {
     private final UserPersistence userPersistence;
     private final TeamPersistence teamPersistence;
-    private final MatchPersistance matchPersistence;
+    private final MatchPersistence matchPersistence;
 
     @PostConstruct
     public void loadDummyData() {
@@ -27,7 +27,7 @@ public class DummyDataLoader {
         User admin = User.builder().id(1).username("admin").email("admin.wp.pl").points(999).balance(100.00).build();
         User user = User.builder().id(2).username("user").email("user.wp.pl").points(10).balance(100.00).build();
         userPersistence.saveAdmin(admin);
-        userPersistence.saveWithAdmin(admin.getUsername(), user);
+        userPersistence.saveUser(user);
         Team legia = Team.builder().id(1).name("legia").inactive(false).build();
         Team wisla = Team.builder().id(2).name("wisla").inactive(false).build();
         teamPersistence.saveTeam(legia);

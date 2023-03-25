@@ -15,11 +15,11 @@ import java.util.Optional;
 public class UserService {
     private final UserPersistence userPersistence;
     private final AdminService adminService;
-    public void saveWithAdmin(String username, final User user) {
+    public void saveUser(String username, final User user) {
         if (adminService.checkIfEmpty()) {
             userPersistence.saveAdmin(user);
         } else if (adminService.isAdmin(username)) {
-            userPersistence.saveWithAdmin(username, user);
+            userPersistence.saveUser(user);
         }
     }
     public void deleteUser(final Integer id) {

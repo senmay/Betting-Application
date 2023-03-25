@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Profile("cache")
-public class CacheMatchPersistenceService implements MatchPersistance{
+public class CacheMatchPersistenceService implements MatchPersistence {
     Map<Integer, Match> matchMap = new HashMap<>();
 
     @Override

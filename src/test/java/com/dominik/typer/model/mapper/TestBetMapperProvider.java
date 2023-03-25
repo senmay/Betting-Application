@@ -106,4 +106,5 @@ class TestBetMapperProvider implements BetProvider {
                 .isNotNull()
                 .hasSize(10);
     }
+
 }

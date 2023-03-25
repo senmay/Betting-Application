@@ -1,6 +1,6 @@
 package com.dominik.typer.DataForTests;
 
-import com.dominik.typer.enumerations.BetType;
+import com.dominik.typer.enumerations.MatchOutcome;
 import com.dominik.typer.model.Bet;
 import com.dominik.typer.model.entity.BetEntity;
 import com.dominik.typer.model.json.BetJson;
@@ -21,11 +21,11 @@ public interface BetProvider {
                 .matchId(faker.number().numberBetween(1, 100))
                 .userId(faker.number().numberBetween(1, 100))
                 .pointsFromBetEvent(faker.number().numberBetween(1, 3))
-                .betType(faker.options().option(BetType.class))
-                .betAmount(faker.number().numberBetween(5, 1000))
+                .betType(faker.options().option(MatchOutcome.class))
+                .betAmount((double) faker.number().numberBetween(5, 1000))
+                .betOdds((double) faker.number().numberBetween(1, 10))
                 .build();
     }
-
     default BetJson provideBetJson() {
         return betMapper.mapFromBet(provideBet());
     }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @Profile({"db", "!cache"})
 @RequiredArgsConstructor
-public class DbMatchPersistenceService implements MatchPersistance {
+public class DbMatchPersistenceService implements MatchPersistence {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
     @Override
