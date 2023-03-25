@@ -63,6 +63,12 @@ public class UserJsonController {
         userService.deleteUser(id);
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    void updateBalance(@RequestBody UserJson userJson) {
+        userService.updateBalance(userJson.getId(), userJson.getBalance());
+    }
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public DbError handleRuntimeExceptionAsync(Exception exception) {

@@ -1,6 +1,6 @@
 package com.dominik.typer.model;
 
-import com.dominik.typer.enumerations.BetType;
+import com.dominik.typer.enumerations.MatchOutcome;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +17,6 @@ public class Bet {
     Integer matchId;
     Integer userId;
     Integer pointsFromBetEvent;
-    BetType betType;
+    MatchOutcome betType;
     BigDecimal betAmount;
 }

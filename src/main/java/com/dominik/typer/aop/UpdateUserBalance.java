@@ -1,6 +1,5 @@
 package com.dominik.typer.aop;
 
-import com.dominik.typer.enumerations.BetType;
 import com.dominik.typer.enumerations.MatchOutcome;
 import com.dominik.typer.model.Bet;
 import com.dominik.typer.model.MatchResult;
@@ -15,6 +14,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static com.dominik.typer.enumerations.MatchOutcome.*;
+import static com.dominik.typer.enumerations.MatchOutcome.HOME_TEAM_WIN;
 
 @Aspect
 @Component
@@ -35,11 +37,11 @@ public class UpdateUserBalance {
         for (Bet bet : bets) {
             boolean isWinningBet = false;
 
-            if (bet.getBetType() == BetType.HOME_TEAM_WIN && matchOutcome == MatchOutcome.HOME_TEAM_WIN) {
+            if (bet.getBetType() == HOME_TEAM_WIN && matchOutcome == HOME_TEAM_WIN) {
                 isWinningBet = true;
-            } else if (bet.getBetType() == BetType.AWAY_TEAM_WIN && matchOutcome == MatchOutcome.AWAY_TEAM_WIN) {
+            } else if (bet.getBetType() == AWAY_TEAM_WIN && matchOutcome == AWAY_TEAM_WIN) {
                 isWinningBet = true;
-            } else if (bet.getBetType() == BetType.DRAW && matchOutcome == MatchOutcome.DRAW) {
+            } else if (bet.getBetType() == DRAW && matchOutcome == DRAW) {
                 isWinningBet = true;
             }
             if (isWinningBet) {
