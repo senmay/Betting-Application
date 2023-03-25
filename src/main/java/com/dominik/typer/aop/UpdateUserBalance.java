@@ -21,6 +21,7 @@ import static com.dominik.typer.enumerations.MatchOutcome.HOME_TEAM_WIN;
 @Aspect
 @Component
 @RequiredArgsConstructor
+//* Unlisting class from scanning, using different approach for updating balance */
 public class UpdateUserBalance {
     private final BetRepository betRepository;
     private final UserService userService;
@@ -32,7 +33,7 @@ public class UpdateUserBalance {
     public void updateUserBalanceAfterMatch(MatchResultJson matchResultJson) {
         MatchResult matchResult = matchResultMapper.mapFromMatchResultJson(matchResultJson);
         MatchOutcome matchOutcome = matchResult.getMatchOutcome();
-        List<Bet> bets = betMapper.mapToListBet(betRepository.findAllByMatchId(matchResult.getMatchId()));
+        List<Bet> bets = betMapper.mapToListBet(betRepository.findAllBetsByMatchId(matchResult.getMatchId()));
 
         for (Bet bet : bets) {
             boolean isWinningBet = false;

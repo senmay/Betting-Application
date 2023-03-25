@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,10 +23,9 @@ public class DummyDataLoader {
 
     @PostConstruct
     public void loadDummyData() {
-//        Faker faker = new Faker();
 
-        User admin = User.builder().id(1).username("admin").email("admin.wp.pl").points(999).balance(BigDecimal.valueOf(100)).build();
-        User user = User.builder().id(2).username("user").email("user.wp.pl").points(10).balance(BigDecimal.valueOf(100)).build();
+        User admin = User.builder().id(1).username("admin").email("admin.wp.pl").points(999).balance(100.00).build();
+        User user = User.builder().id(2).username("user").email("user.wp.pl").points(10).balance(100.00).build();
         userPersistence.saveAdmin(admin);
         userPersistence.saveWithAdmin(admin.getUsername(), user);
         Team legia = Team.builder().id(1).name("legia").inactive(false).build();
@@ -35,7 +33,7 @@ public class DummyDataLoader {
         teamPersistence.saveTeam(legia);
         teamPersistence.saveTeam(wisla);
         Match match1 = Match.builder().id(1).homeTeamId(1)
-                .awayTeamId(2).oddsForAwayTeam(1.00).oddsForHomeTeam(1.00)
+                .awayTeamId(2).oddsForAwayTeam(2.00).oddsForHomeTeam(3.00)
                 .oddsForDraw(1.00).dateOfEvent(LocalDateTime.now().plusDays(1))
                 .matchResultId(0).build();
         Match match2 = Match.builder().id(2).homeTeamId(2)

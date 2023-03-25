@@ -9,4 +9,5 @@ public interface BetPersistence {
     List<Bet> getAllBets();
     void deleteBetById(Integer id);
     List<Bet> getBetsFromUser(Integer id);
+    List<Bet> getBetsFromMatch(Integer id);
 }

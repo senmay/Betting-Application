@@ -19,4 +19,5 @@ public interface MatchRepository extends JpaRepository<MatchEntity, Integer> {
     List<MatchEntity> findMatchesForTeamWithinTimeRange(@Param("teamId") Integer teamId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 
+
 }

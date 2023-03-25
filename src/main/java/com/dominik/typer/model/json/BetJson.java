@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Value;
 
-import java.math.BigDecimal;
-
 @Value
 @Builder
 public class BetJson {
@@ -22,6 +20,8 @@ public class BetJson {
     Integer pointsFromBetEvent;
     @NotNull
     MatchOutcome betType;
+    @Null
+    Double betOdds;
     @Positive
-    BigDecimal betAmount;
+    Double betAmount;
 }

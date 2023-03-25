@@ -69,14 +69,13 @@ public class MatchController {
         matchService.deleteMatch(id);
     }
 
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    void updateMatch(@PathVariable Integer id, @RequestBody MatchJson matchJson)
-//    {
-//        Team homeTeam = teamService.getTeamByName(matchJson.getHomeTeamName());
-//        Team awayTeam = teamService.getTeamByName(matchJson.getAwayTeamName());
-//        matchService.updateMatch(id, matchJsonMapper.mapFromJson(matchJson, homeTeam, awayTeam));
-//    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void updateMatch(@PathVariable Integer id, @RequestBody MatchJson matchJson)
+    {
+        //todo implement method
+    }
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public DbError handleRuntimeExceptionAsync(Exception exception) {
