@@ -1,6 +1,6 @@
 # Sports Betting Application
 
-This is a sports betting application built using Spring Boot and Hibernate. The application provides a RESTful API for users to place bets on sports events and manages the users' balances and bet results. Application is still in development. In wikis there is scenario for creating bet using request.
+This is a sports betting application built using Spring Boot and Hibernate. The application provides a RESTful API for users to place bets on sports events and manages the user balance and bet results. Application is still in development. In wikis there is scenario for creating bet using request.
 Application is not 100% finished.
 
 ## Overview
