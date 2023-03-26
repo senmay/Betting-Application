@@ -1,30 +1,33 @@
 package com.dominik.typer.service.userpersistence;
 
 import com.dominik.typer.model.User;
-import com.dominik.typer.service.teampersistence.TeamService;
+import com.dominik.typer.service.adminpersistence.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
     private final UserPersistence userPersistence;
-    private final TeamService teamService;
-    public void saveUser(final User user) {
-        userPersistence.save(user);
-    }
+    private final AdminService adminService;
     public void saveWithAdmin(String username, final User user) {
-        userPersistence.saveWithAdmin(username, user);
+        if (adminService.checkIfEmpty()) {
+            userPersistence.saveAdmin(user);
+        } else if (adminService.isAdmin(username)) {
+            userPersistence.saveWithAdmin(username, user);
+        }
     }
     public void deleteUser(final Integer id) {
         userPersistence.deleteUserById(id);
     }
 
-    public User getUser(final Integer id) {
+    public Optional<User> getUser(final Integer id) {
         return userPersistence.getUserById(id);
     }
 
@@ -34,8 +37,11 @@ public class UserService {
     public void updateUser(Integer id, User user) {
         userPersistence.updateUserById(id, user);
     }
-    public User getUserWithUsername(String username) {
+    public Optional<User> getUserWithUsername(String username) {
         return userPersistence.getUserByUsername(username);
+    }
+    public void updateBalance(Integer id, BigDecimal betValue) {
+        userPersistence.updateBalance(id, betValue);
     }
 }
 

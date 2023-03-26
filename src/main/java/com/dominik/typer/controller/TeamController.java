@@ -6,6 +6,8 @@ import com.dominik.typer.model.json.TeamJson;
 import com.dominik.typer.model.mapper.TeamMapper;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.teampersistence.TeamService;
+import com.dominik.typer.validators.GeneralValidator;
+import com.dominik.typer.validators.ValidationGroupJson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +23,13 @@ public class TeamController {
     private final TeamService teamService;
     private final TeamMapper teamMapper;
     private final DbErrorService dbErrorService;
+    private final GeneralValidator generalValidator;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    TeamJson createTeam(@RequestBody TeamJson teamJson) {
-        teamService.saveTeam(teamMapper.mapFromJson(teamJson));
-        return teamJson;
+    void createTeam(@RequestHeader("login") String username, @RequestBody TeamJson teamJson) {
+        generalValidator.validateObject(teamJson, ValidationGroupJson.class);
+        teamService.saveTeam(username, teamMapper.mapFromJson(teamJson));
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class TeamController {
     @GetMapping("/{name}")
     @ResponseStatus(HttpStatus.OK)
     Optional<TeamJson> getTeam(@PathVariable String name) {
-        Optional<Team> team = Optional.ofNullable(teamService.getTeamByName(name));
+        Optional<Team> team = teamService.getTeamByName(name);
         return team.map(teamMapper::mapToJson);
     }
 

@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -55,7 +56,7 @@ class UserJsonControllerTest implements UserProvider {
     @Test
     void givenUser_whenGetUser_returnUser() throws Exception {
         User u = new User(1, "A", 10, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
-        when(userService.getUser(1)).thenReturn(u);
+        when(userService.getUser(1)).thenReturn(Optional.of(u));
         String contentAsString = mockMvc.perform(get("/user/1"))
                 .andExpect(status().is(200))
                 .andExpect(header().string("Content-Type", "application/json"))

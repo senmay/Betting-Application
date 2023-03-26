@@ -5,6 +5,7 @@ import com.dominik.typer.model.entity.TeamEntity;
 import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.TeamMapper;
 import com.dominik.typer.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +13,14 @@ import java.util.List;
 import java.util.Optional;
 @Service
 @Profile({"db", "!cache"})
+@RequiredArgsConstructor
 public class DbTeamPersistenceService implements TeamPersistence {
 
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
 
-    public DbTeamPersistenceService(TeamRepository teamRepository, TeamMapper teamMapper) {
-        this.teamRepository = teamRepository;
-        this.teamMapper = teamMapper;
-    }
-
     @Override
     public void saveTeam(Team team) {
-        if (teamRepository.existsByName(team.getName())) {
-            throw new RuntimeException("Team with name " + team.getName() + " already exists");
-        }
         teamRepository.save(teamMapper.mapToTeamEntity(team));
     }
 
@@ -36,10 +30,11 @@ public class DbTeamPersistenceService implements TeamPersistence {
         return teamMapper.mapFromTeamEntity(teamEntity);
     }
 
+
     @Override
-    public Team getTeamByName(String name) {
+    public Optional<Team> getTeamByName(String name) {
         Optional<TeamEntity> byName = teamRepository.getByName(name);
-        return byName.map(teamMapper::mapFromTeamEntity).orElseThrow(() -> new RuntimeException("No team with this name"));
+        return byName.map(teamMapper::mapFromTeamEntity);
     }
     @Override
     public List<Team> getAllTeams() {

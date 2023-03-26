@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,10 +16,9 @@ public class Match {
     private Integer id;
     private Integer homeTeamId;
     private Integer awayTeamId;
-    private LocalDate dateOfEvent;
+    private LocalDateTime dateOfEvent;
     private Double oddsForHomeTeam;
     private Double oddsForDraw;
     private Double oddsForAwayTeam;
-    private Boolean isFinished;
     private Integer matchResultId;
 }

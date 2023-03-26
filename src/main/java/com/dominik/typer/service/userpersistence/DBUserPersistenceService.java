@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +31,15 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public void save(User user) {
+    public void saveAdmin(User user) {
+        user.setUserType(UserRole.ADMIN);
         userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
     public void saveWithAdmin(String username, User user) {
-        if (adminService.isAdmin(username)) {
-            user.setUserType(UserRole.USER);
-            userRepository.save(userMapper.mapToUserEntity(user));
-        }
+        user.setUserType(UserRole.USER);
+        userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
@@ -48,16 +48,25 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public Optional<User> getUserById(Integer id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with id " + id));
-
+        return userEntity.map(userMapper::mapToUser);
+    }
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        Optional<UserEntity> userEntity = userRepository.getByUsername(username);
+        return userEntity.map(userMapper::mapToUser);
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        Optional<UserEntity> userEntity = userRepository.getByUsername(username);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with username " + username));
+    public void updateBalance(Integer userId, BigDecimal betValue) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            BigDecimal balance1 = user.getBalance();
+            user.setBalance(balance1.add(betValue));
+            userRepository.save(user);
+        }
     }
 
     @Override
