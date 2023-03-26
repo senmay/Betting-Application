@@ -22,15 +22,12 @@ The application is designed with a focus on modularity, scalability, and maintai
 
 - Java 11
 - Spring Boot
-- Spring Security
 - Spring Data JPA
 - Hibernate
 - H2 Database (for development)
-- PostgreSQL (for production)
 - Maven
 - RESTful API
-- JWT for authentication
-- Lombok for reducing boilerplate code
+- Lombok and MapStruct for reducing boilerplate code
 - Aspect-Oriented Programming (AOP) for updating balances after entering match result
 
 ## Acknowledgments
