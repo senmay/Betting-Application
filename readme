@@ -37,4 +37,4 @@ The application is designed with a focus on modularity, scalability, and maintai
 - Spring Boot and Hibernate for providing the framework and ORM
 - H2 Database for development
 - Maven for project management and build automation
-- All other open-source libraries and tools used in this project                                                                                                                     | O           |
+- All other open-source libraries and tools used in this project
