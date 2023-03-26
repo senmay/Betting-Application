@@ -3,9 +3,9 @@ package com.dominik.typer.service.userpersistence;
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.entity.UserEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.repository.UserRepository;
-import com.dominik.typer.service.adminpersistence.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -19,27 +19,23 @@ public class DBUserPersistenceService implements UserPersistence {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-    private final AdminService adminService;
-
 
     @Autowired
-    public DBUserPersistenceService(UserMapper userMapper, UserRepository userRepository, AdminService adminService) {
+    public DBUserPersistenceService(UserMapper userMapper, UserRepository userRepository) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
-        this.adminService = adminService;
     }
 
     @Override
-    public void save(User user) {
+    public void saveAdmin(User user) {
+        user.setUserType(UserRole.ADMIN);
         userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
-    public void saveWithAdmin(String username, User user) {
-        if (adminService.isAdmin(username)) {
-            user.setUserType(UserRole.USER);
-            userRepository.save(userMapper.mapToUserEntity(user));
-        }
+    public void saveUser(User user) {
+        user.setUserType(UserRole.USER);
+        userRepository.save(userMapper.mapToUserEntity(user));
     }
 
     @Override
@@ -48,16 +44,28 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public Optional<User> getUserById(Integer id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with id " + id));
-
+        if (userEntity.isEmpty()) {
+            throw new MyAppException("No user with id " + id);
+        }
+        return userEntity.map(userMapper::mapToUser);
+    }
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        Optional<UserEntity> userEntity = userRepository.getByUsername(username);
+        return userEntity.map(userMapper::mapToUser);
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        Optional<UserEntity> userEntity = userRepository.getByUsername(username);
-        return userEntity.map(userMapper::mapToUser).orElseThrow(() -> new RuntimeException("No user with username " + username));
+    public void updateBalance(Integer userId, Double betValue) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            Double balance1 = user.getBalance();
+            user.setBalance(balance1 + betValue);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -66,14 +74,14 @@ public class DBUserPersistenceService implements UserPersistence {
         if (user.isPresent()) {
             userRepository.delete(user.get());
         } else {
-            throw new RuntimeException("No user with id " + id);
+            throw new MyAppException("No user with id " + id);
         }
     }
 
     @Override
     public void updateUserById(Integer id, User user) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("No user with id " + id);
+            throw new MyAppException("No user with id " + id);
         }
         Optional<UserEntity> userEntity = userRepository.findById(id);
         User updatedUser = userMapper.mapToUser(userEntity.get());

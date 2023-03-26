@@ -1,6 +1,6 @@
 package com.dominik.typer.model.json;
 
-import com.dominik.typer.enumerations.BetType;
+import com.dominik.typer.enumerations.MatchOutcome;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Positive;
@@ -19,7 +19,9 @@ public class BetJson {
     @Null
     Integer pointsFromBetEvent;
     @NotNull
-    BetType betType;
+    MatchOutcome betType;
+    @Null
+    Double betOdds;
     @Positive
-    Integer betAmount;
+    Double betAmount;
 }

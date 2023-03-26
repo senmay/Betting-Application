@@ -25,11 +25,10 @@ public class CacheTeamPersistenceService implements TeamPersistence {
     }
 
     @Override
-    public Team getTeamByName(String name) {
+    public Optional<Team> getTeamByName(String name) {
         return teams.values().stream()
                 .filter(team -> team.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No team with name " + name));
+                .findFirst();
     }
     @Override
     public List<Team> getAllTeams() {

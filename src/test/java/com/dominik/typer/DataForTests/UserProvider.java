@@ -6,7 +6,6 @@ import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.model.mapper.UserMapperImpl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public interface UserProvider {
                 .points(5)
                 .email("admin@wp.pl")
                 .userType(UserRole.ADMIN)
-                .balance(BigDecimal.valueOf(100))
+                .balance(100.00)
                 .build();
     }
 

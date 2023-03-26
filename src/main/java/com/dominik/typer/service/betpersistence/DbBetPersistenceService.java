@@ -1,7 +1,6 @@
 package com.dominik.typer.service.betpersistence;
 
 import com.dominik.typer.model.Bet;
-import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.BetEntity;
 import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.BetMapper;
@@ -26,16 +25,6 @@ public class DbBetPersistenceService implements BetPersistence {
 
     @Override
     public void saveBet(Bet bet) {
-        List<Match> matches = matchService.getMatchesPossibleToBet();
-        Integer matchId = bet.getMatchId();
-        matches.stream()
-                .filter(match -> match.getId().equals(matchId))
-                .findFirst()
-                .orElseThrow(() -> new MyAppException("Match with id: " + matchId + " does not exist"));
-
-        if (betRepository.existsById(bet.getId())) {
-            throw new MyAppException("Bet with id: " + bet.getId() + " already exists");
-        }
         betRepository.save(betMapper.mapToBetEntity(bet));
     }
 
@@ -48,8 +37,20 @@ public class DbBetPersistenceService implements BetPersistence {
     @Override
     public void deleteBetById(Integer id) {
         if (!matchRepository.existsById(id)) {
-            throw new RuntimeException("Match with id: " + id + " does not exist");
+            throw new MyAppException("Match with id: " + id + " does not exist");
         }
         betRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Bet> getBetsFromUser(Integer id) {
+        List<BetEntity> betEntityList = betRepository.findAllBetsByUserId(id);
+        return betMapper.mapToListBet(betEntityList);
+    }
+
+    @Override
+    public List<Bet> getBetsFromMatch(Integer id) {
+        List<BetEntity> betEntityList = betRepository.findAllBetsByMatchId(id);
+        return betMapper.mapToListBet(betEntityList);
     }
 }

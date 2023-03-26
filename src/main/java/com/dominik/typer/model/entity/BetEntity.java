@@ -1,6 +1,6 @@
 package com.dominik.typer.model.entity;
 
-import com.dominik.typer.enumerations.BetType;
+import com.dominik.typer.enumerations.MatchOutcome;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +21,8 @@ public class BetEntity {
     Integer matchId;
     Integer userId;
     Integer pointsFromBetEvent;
-    BetType betType;
-    Integer betAmount;
+    MatchOutcome betType;
+    Double betAmount;
+    Double betOdds;
 
 }
