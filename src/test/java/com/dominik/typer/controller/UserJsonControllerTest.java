@@ -68,27 +68,20 @@ class UserJsonControllerTest implements UserProvider {
     }
 
     @Test
-    void givenUserJson_whenRegisterUser_returnStatus201() throws Exception {
+    void givenUserJson_whenSaveUser_returnStatus201() throws Exception {
         //given
         UserJson u = UserJson.builder().id(1).username("A").email("dom@wp.pl").points(10).build();
         String userjson = objectMapper.writeValueAsString(u);
         //when and then
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user/admin")
                         .contentType("application/json")
+                        .header("login", "Admin")
                         .content(userjson))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void givenMissingBody_thenReturns404() throws Exception {
-        mockMvc.perform(post("/user")
-                        .contentType("application/json"))
-                .andExpect(status().isNotFound())
-                .andReturn();
-    }
-
-    @Test
-    void givenHeaderAndBody_whenRegisterUserWithAdmin_thenSave() throws Exception {
+    void givenHeaderAndBody_whenSaveUser_thenSave() throws Exception {
         //given
         UserJson u = UserJson.builder().id(1).username("A").email("domwp.pl").points(10).build();
         String userJson = objectMapper.writeValueAsString(u);
