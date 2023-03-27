@@ -18,14 +18,17 @@ import java.util.Optional;
 public class DbMatchPersistenceService implements MatchPersistance {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
+
     @Override
     public void save(Match match) {
         matchRepository.save(matchMapper.mapToEntity(match));
     }
+
     @Override
     public void saveWithAdmin(String username, Match match) {
-            matchRepository.save(matchMapper.mapToEntity(match));
-        }
+        matchRepository.save(matchMapper.mapToEntity(match));
+    }
+
     @Override
     public List<Match> getAllMatches() {
         List<MatchEntity> matchEntityList = matchRepository.findAll();
@@ -49,24 +52,25 @@ public class DbMatchPersistenceService implements MatchPersistance {
         List<MatchEntity> matchEntityList = matchRepository.getAllMatchesByTeamId(id);
         return matchMapper.mapToListMatch(matchEntityList);
     }
+
     @Override
     public Optional<Match> getMatchById(Integer id) {
         Optional<MatchEntity> matchEntity = matchRepository.findById(id);
         return matchEntity.map(matchMapper::mapFromEntity);
     }
 
-        @Override
-        public void deleteMatchById (Integer id){
-            if (!matchRepository.existsById(id)) {
-                throw new RuntimeException("Match with id: " + id + " does not exist");
-            }
-            matchRepository.deleteById(id);
+    @Override
+    public void deleteMatchById(Integer id) {
+        if (!matchRepository.existsById(id)) {
+            throw new RuntimeException("Match with id: " + id + " does not exist");
         }
-
-        @Override
-        public void updateMatchById (Integer id, Match match){
-        //TODO
-        }
-
+        matchRepository.deleteById(id);
     }
+
+    @Override
+    public void updateMatchById(Integer id, Match match) {
+        //TODO
+    }
+
+}
 
