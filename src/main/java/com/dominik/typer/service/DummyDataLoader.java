@@ -3,7 +3,7 @@ package com.dominik.typer.service;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.Team;
 import com.dominik.typer.model.User;
-import com.dominik.typer.service.matchpersistence.MatchPersistance;
+import com.dominik.typer.service.matchpersistence.MatchPersistence;
 import com.dominik.typer.service.teampersistence.TeamPersistence;
 import com.dominik.typer.service.userpersistence.UserPersistence;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class DummyDataLoader {
     private final UserPersistence userPersistence;
     private final TeamPersistence teamPersistence;
-    private final MatchPersistance matchPersistence;
+    private final MatchPersistence matchPersistence;
 
     @PostConstruct
     public void loadDummyData() {

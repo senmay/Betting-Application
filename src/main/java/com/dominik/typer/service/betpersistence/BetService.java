@@ -4,7 +4,9 @@ import com.dominik.typer.enumerations.MatchOutcome;
 import com.dominik.typer.model.Bet;
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.exceptions.MyAppException;
+import com.dominik.typer.service.matchpersistence.MatchPersistence;
 import com.dominik.typer.service.matchpersistence.MatchService;
+import com.dominik.typer.service.userpersistence.UserPersistence;
 import com.dominik.typer.service.userpersistence.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +19,17 @@ public class BetService {
     private final BetPersistence betPersistence;
     private final MatchService matchService;
     private final UserService userService;
+    private final UserPersistence userPersistence;
+    private final MatchPersistence matchPersistence;
 
-    //negate value to update balance
     public void saveBet(Bet bet) {
         checkIfUserExistsById(bet.getUserId());
         checkIfMatchExists(bet.getMatchId());
         Double odds = checkOddsForBet(bet.getMatchId(), bet.getBetType());
         bet.setBetOdds(odds);
         checkIfUserHasMoneyForBet(userService.getUser(bet.getUserId()).get().getUsername(), bet.getBetAmount());
-        userService.updateBalance(bet.getUserId(), (-1) * bet.getBetAmount());
+        //negate value to update balance
+        userPersistence.updateBalance(bet.getUserId(), (-1) * bet.getBetAmount());
         betPersistence.saveBet(bet);
     }
 
@@ -34,12 +38,6 @@ public class BetService {
         betPersistence.getBetsFromUser(getIdFromUsername(username));
         return betPersistence.getBetsFromUser(getIdFromUsername(username));
     }
-
-    public List<Bet> getBetsByMatchId(Integer matchId) {
-        checkIfMatchExists(matchId);
-        return betPersistence.getBetsFromMatch(matchId);
-    }
-
     private void checkIfMatchExists(Integer matchId) {
         if (matchService.getMatch(matchId).isEmpty()) {
             throw new MyAppException("Match does not exist");
@@ -47,7 +45,7 @@ public class BetService {
     }
 
     private void checkIfUserExistsByUsername(String username) {
-        if (userService.getUserWithUsername(username).isEmpty()) {
+        if (userPersistence.getUserByUsername(username).isEmpty()) {
             throw new MyAppException("User does not exist");
         }
     }
@@ -63,18 +61,13 @@ public class BetService {
     }
 
     private void checkIfUserExistsById(Integer id) {
-        if (userService.getUser(id).isEmpty()) {
+        if (userPersistence.getUserById(id).isEmpty()) {
             throw new MyAppException("User does not exist");
         }
     }
 
     private double checkOddsForBet(Integer id, MatchOutcome betType) {
-        Match match = matchService.getMatch(id).get();
-        Double odds = switch (betType) {
-            case HOME_TEAM_WIN -> match.getOddsForHomeTeam();
-            case AWAY_TEAM_WIN -> match.getOddsForAwayTeam();
-            case DRAW -> match.getOddsForDraw();
-        };
-        return odds;
+        Match match = matchPersistence.getMatchById(id).get();
+        return match.getOddsByMatchOutcome(betType);
     }
 }

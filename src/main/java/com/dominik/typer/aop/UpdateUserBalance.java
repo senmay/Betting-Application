@@ -11,7 +11,6 @@ import com.dominik.typer.service.userpersistence.UserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import static com.dominik.typer.enumerations.MatchOutcome.*;
 import static com.dominik.typer.enumerations.MatchOutcome.HOME_TEAM_WIN;
 
 @Aspect
-@Component
+//@Component
 @RequiredArgsConstructor
 //* Unlisting class from scanning, using different approach for updating balance */
 public class UpdateUserBalance {
@@ -33,7 +32,7 @@ public class UpdateUserBalance {
     public void updateUserBalanceAfterMatch(MatchResultJson matchResultJson) {
         MatchResult matchResult = matchResultMapper.mapFromMatchResultJson(matchResultJson);
         MatchOutcome matchOutcome = matchResult.getMatchOutcome();
-        List<Bet> bets = betMapper.mapToListBet(betRepository.findAllBetsByMatchId(matchResult.getMatchId()));
+        List<Bet> bets = betMapper.mapToListBet(betRepository.findAllByMatchId(matchResult.getMatchId()));
 
         for (Bet bet : bets) {
             boolean isWinningBet = false;

@@ -13,20 +13,21 @@ import java.util.Optional;
 
 @Service
 @Profile("cache")
-public class CacheMatchPersistenceService implements MatchPersistance{
+public class CacheMatchPersistenceService implements MatchPersistence {
+    private static final String MATCH_EXISTS_ERROR_MSG = "Match with id: %d already exists";
     Map<Integer, Match> matchMap = new HashMap<>();
 
     @Override
     public void save(Match match) {
         if (matchMap.containsKey(match.getId())) {
-            throw new RuntimeException("Match with id: " + match.getId() + " already exists");
+            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, match.getId()));
         }
         matchMap.put(match.getId(), match);
     }
     @Override
     public void saveWithAdmin(String username, Match match) {
         if (matchMap.containsKey(match.getId())) {
-            throw new RuntimeException("Match with id: " + match.getId() + " already exists");
+            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, match.getId()));
         }
         matchMap.put(match.getId(), match);
     }
@@ -54,7 +55,7 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     @Override
     public Optional<Match> getMatchById(Integer id) {
         if (!matchMap.containsKey(id)) {
-            throw new MyAppException("Match with id: " + id + " does not exist");
+            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, id ));
         }
         return matchMap.values().stream()
                 .filter(match -> match.getId().equals(id))
@@ -64,7 +65,7 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     @Override
     public void deleteMatchById(Integer id) {
         if (!matchMap.containsKey(id)) {
-            throw new MyAppException("Match with id: " + id + " does not exist");
+            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, id));
         }
         matchMap.remove(id);
     }
@@ -72,7 +73,7 @@ public class CacheMatchPersistenceService implements MatchPersistance{
     @Override
     public void updateMatchById(Integer id, Match match) {
         if (!matchMap.containsKey(id)) {
-            throw new RuntimeException("Match with id: " + id + " does not exist");
+            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, id));
         }
         matchMap.put(id, match);
     }

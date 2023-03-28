@@ -2,6 +2,7 @@ package com.dominik.typer.service.matchpersistence;
 
 import com.dominik.typer.model.Match;
 import com.dominik.typer.model.entity.MatchEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.MatchMapper;
 import com.dominik.typer.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @Service
 @Profile({"db", "!cache"})
 @RequiredArgsConstructor
-public class DbMatchPersistenceService implements MatchPersistance {
+public class DbMatchPersistenceService implements MatchPersistence {
     private final MatchRepository matchRepository;
     private final MatchMapper matchMapper;
     @Override
@@ -58,7 +59,7 @@ public class DbMatchPersistenceService implements MatchPersistance {
         @Override
         public void deleteMatchById (Integer id){
             if (!matchRepository.existsById(id)) {
-                throw new RuntimeException("Match with id: " + id + " does not exist");
+                throw new MyAppException("Match with id: " + id + " does not exist");
             }
             matchRepository.deleteById(id);
         }

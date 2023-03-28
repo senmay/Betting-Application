@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.dominik.typer.enumerations.MatchOutcome.*;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -33,7 +31,7 @@ public class MyComponent {
     @Async
     public void handleMatchResultEvent(MatchResultEvent event) {
         log.error("Custom event received");
-        MatchOutcome matchOutcome = matchResultService.getMatchOutcome(event.getMatchResult());
+        MatchOutcome matchOutcome = event.getMatchResult().getMatchOutcome();
         List<Bet> bets = betPersistence.getBetsFromMatch(event.getMatchResult().getMatchId());
 
         for (Bet bet : bets) {
@@ -44,10 +42,6 @@ public class MyComponent {
         }
     }
     private boolean checkIfBetIsWinning(MatchOutcome matchOutcome, Bet bet) {
-        if (bet.getBetType() == HOME_TEAM_WIN && matchOutcome == HOME_TEAM_WIN) {
-            return true;
-        } else if (bet.getBetType() == AWAY_TEAM_WIN && matchOutcome == AWAY_TEAM_WIN) {
-            return true;
-        } else return bet.getBetType() == DRAW && matchOutcome == DRAW;
+        return bet.getBetType() == matchOutcome;
     }
 }
