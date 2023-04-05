@@ -34,7 +34,13 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public void saveWithAdmin(String username, User user) {
+    public void register(User user){
+        user.setUserType(UserRole.USER);
+        userRepository.save(userMapper.mapToUserEntity(user));}
+
+    @Override
+    //todo change method
+    public void saveWithAdmin(User user) {
         user.setUserType(UserRole.USER);
         userRepository.save(userMapper.mapToUserEntity(user));
     }

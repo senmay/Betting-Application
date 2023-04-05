@@ -17,8 +17,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -44,11 +42,11 @@ class DBUserPersistenceServiceTest implements UserProvider {
         User user = User.builder()
                 .id(1)
                 .username("Dominik")
+                .password("123")
                 .points(0)
                 .email("dom@gmail.com")
                 .build();
         UserEntity userEntity = userMapper.mapToUserEntity(user);
-        given(userRepository.existsById(1)).willReturn(false);
         given(userRepository.save(userEntity)).willReturn(userEntity);
         //when
         dbUserPersistenceService.saveAdmin(user);
@@ -63,6 +61,7 @@ class DBUserPersistenceServiceTest implements UserProvider {
         User user = User.builder()
                 .id(2)
                 .username("Dominik")
+                .password("password")
                 .points(0)
                 .email("dom@gmail.com")
                 .build();
@@ -108,24 +107,24 @@ class DBUserPersistenceServiceTest implements UserProvider {
 //                .isNotNull()
 //                .isEqualTo(expectedUser);
 //    }
-    @Test
-    @DisplayName("If user is not an admin don't save user")
-    void givenUser_whenSaveWithAdmin_returnNothing() {
-        //given
-        User user = User.builder()
-                .id(1)
-                .username("Dominik")
-                .points(0)
-                .email("dom@wp.pl")
-                .userType(UserRole.ADMIN)
-                .build();
-        UserEntity userEntity = userMapper.mapToUserEntity(user);
-        given(adminService.isAdmin("Dominik")).willReturn(false);
-        //when
-        dbUserPersistenceService.saveWithAdmin("Dominik", user);
-        //then
-        then(userRepository).shouldHaveNoInteractions();
-    }
+//    @Test
+//    @DisplayName("If user is not an admin don't save user")
+//    void givenUser_whenSaveWithAdmin_returnNothing() {
+//        //given
+//        User user = User.builder()
+//                .id(1)
+//                .username("Dominik")
+//                .points(0)
+//                .email("dom@wp.pl")
+//                .userType(UserRole.ADMIN)
+//                .build();
+//        UserEntity userEntity = userMapper.mapToUserEntity(user);
+//        given(adminService.isAdmin("Dominik")).willReturn(false);
+//        //when
+//        dbUserPersistenceService.saveWithAdmin("Dominik", user);
+//        //then
+//        then(userRepository).shouldHaveNoInteractions();
+//    }
 
     @Test
     @DisplayName("If user is an admin save user")
@@ -137,12 +136,12 @@ class DBUserPersistenceServiceTest implements UserProvider {
                 .points(0)
                 .email("dom@wp.pl")
                 .userType(UserRole.USER)
-                .balance(BigDecimal.ZERO)
+                .balance(0.00)
                 .build();
         given(adminService.isAdmin("Dominik")).willReturn(true);
         ArgumentCaptor<UserEntity> captor = ArgumentCaptor.forClass(UserEntity.class);
         //when
-        dbUserPersistenceService.saveWithAdmin("Dominik", user);
+        dbUserPersistenceService.saveWithAdmin(user);
         then(userRepository).should().save(captor.capture());
     }
 }

@@ -27,9 +27,9 @@ public class TeamController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void createTeam(@RequestHeader("login") String username, @RequestBody TeamJson teamJson) {
+    void createTeam(@RequestBody TeamJson teamJson) {
         generalValidator.validateObject(teamJson, ValidationGroupJson.class);
-        teamService.saveTeam(username, teamMapper.mapFromJson(teamJson));
+        teamService.saveTeam(teamMapper.mapFromJson(teamJson));
     }
 
     @GetMapping

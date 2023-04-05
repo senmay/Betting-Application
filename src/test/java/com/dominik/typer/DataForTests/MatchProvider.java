@@ -20,11 +20,10 @@ public interface MatchProvider {
                 .id(faker.number().numberBetween(1, 100))
                 .homeTeamId(faker.number().numberBetween(1, 100))
                 .awayTeamId(faker.number().numberBetween(1, 100))
-                .dateOfEvent(faker.date().between(faker.date().past(100, TimeUnit.DAYS), faker.date().future(100, TimeUnit.DAYS)).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                .dateOfEvent(faker.date().between(faker.date().past(100, TimeUnit.DAYS), faker.date().future(100, TimeUnit.DAYS)).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay())
                 .oddsForHomeTeam(faker.number().randomDouble(2, 1, 5))
                 .oddsForDraw(faker.number().randomDouble(2, 1, 5))
                 .oddsForAwayTeam(faker.number().randomDouble(2, 1, 5))
-                .isFinished(faker.bool().bool())
                 .matchResultId(faker.number().numberBetween(1, 100))
                 .build();
     }
@@ -54,7 +53,7 @@ public interface MatchProvider {
         List<Match> matchList = new ArrayList<>();
         for(int i = 0; i < 20; i++){
             Match matchToAdd = provideMatch();
-            matchToAdd.setDateOfEvent(faker.date().future(100, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            matchToAdd.setDateOfEvent(faker.date().future(100, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay());
             matchList.add(matchToAdd);
         }
         return matchList;
@@ -64,7 +63,7 @@ public interface MatchProvider {
         List<Match> matchList = new ArrayList<>();
         for(int i = 0; i < size; i++){
             Match matchToAdd = provideMatch();
-            matchToAdd.setDateOfEvent(faker.date().past(100, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            matchToAdd.setDateOfEvent(faker.date().past(100, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay());
             matchList.add(matchToAdd);
         }
         return matchList;
