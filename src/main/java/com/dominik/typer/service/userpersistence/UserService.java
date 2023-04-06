@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +29,6 @@ public class UserService {
     public Optional<User> getUser(final Integer id) {
         return userPersistence.getUserById(id);
     }
-
     public List<User> getUsers() {
         return userPersistence.getAllUsers();
     }
@@ -40,7 +38,7 @@ public class UserService {
     public Optional<User> getUserWithUsername(String username) {
         return userPersistence.getUserByUsername(username);
     }
-    public void updateBalance(Integer id, BigDecimal betValue) {
+    public void updateBalance(Integer id, Double betValue) {
         userPersistence.updateBalance(id, betValue);
     }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface MatchPersistance {
+public interface MatchPersistence {
     void save(Match match);
     List<Match> getAllMatches();
     Optional<Match> getMatchById(Integer id);

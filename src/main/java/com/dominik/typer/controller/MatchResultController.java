@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/results")
 @RequiredArgsConstructor
+//todo merge with MatchController
 public class MatchResultController {
     private final MatchResultService matchResultService;
     private final GeneralValidator validator;

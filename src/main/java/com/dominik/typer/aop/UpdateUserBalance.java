@@ -11,7 +11,6 @@ import com.dominik.typer.service.userpersistence.UserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -19,8 +18,9 @@ import static com.dominik.typer.enumerations.MatchOutcome.*;
 import static com.dominik.typer.enumerations.MatchOutcome.HOME_TEAM_WIN;
 
 @Aspect
-@Component
+//@Component
 @RequiredArgsConstructor
+//* Unlisting class from scanning, using different approach for updating balance */
 public class UpdateUserBalance {
     private final BetRepository betRepository;
     private final UserService userService;

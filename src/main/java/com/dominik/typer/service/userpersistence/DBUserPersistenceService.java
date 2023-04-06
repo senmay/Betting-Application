@@ -3,6 +3,7 @@ package com.dominik.typer.service.userpersistence;
 import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.entity.UserEntity;
+import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.repository.UserRepository;
 import com.dominik.typer.service.adminpersistence.AdminService;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +20,11 @@ public class DBUserPersistenceService implements UserPersistence {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-    private final AdminService adminService;
-
 
     @Autowired
     public DBUserPersistenceService(UserMapper userMapper, UserRepository userRepository, AdminService adminService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
-        this.adminService = adminService;
     }
 
     @Override
@@ -59,12 +56,12 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public void updateBalance(Integer userId, BigDecimal betValue) {
+    public void updateBalance(Integer userId, Double betValue) {
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
-            BigDecimal balance1 = user.getBalance();
-            user.setBalance(balance1.add(betValue));
+            Double balance1 = user.getBalance();
+            user.setBalance(balance1 + betValue);
             userRepository.save(user);
         }
     }
@@ -75,7 +72,7 @@ public class DBUserPersistenceService implements UserPersistence {
         if (user.isPresent()) {
             userRepository.delete(user.get());
         } else {
-            throw new RuntimeException("No user with id " + id);
+            throw new MyAppException("No user with id " + id);
         }
     }
 

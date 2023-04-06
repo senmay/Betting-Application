@@ -10,8 +10,6 @@ import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 
-import java.math.BigDecimal;
-
 @Value
 @Builder
 public class UserJson {
@@ -23,7 +21,7 @@ public class UserJson {
     Integer points;
     @NotNull(groups = {ValidationGroupBusinessLogic.class})
     @Digits(integer = 10, fraction = 2, groups = {ValidationGroupBusinessLogic.class})
-    BigDecimal balance;
+    Double balance;
     @NotNull(groups = {ValidationGroupBusinessLogic.class})
     UserRole userType;
     @NotEmpty(groups = {ValidationGroupJson.class, ValidationGroupPutJson.class})
