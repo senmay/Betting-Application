@@ -2,6 +2,7 @@
 /target/
 /src/main/java/org/
 /src/test/java/org.mocktest/
+src/main/java/com/dominik/typer/cachelessons
 
 *.iml
 
