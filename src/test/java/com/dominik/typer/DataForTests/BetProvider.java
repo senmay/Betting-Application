@@ -23,6 +23,7 @@ public interface BetProvider {
                 .pointsFromBetEvent(faker.number().numberBetween(1, 3))
                 .betType(faker.options().option(MatchOutcome.class))
                 .betAmount((double) faker.number().numberBetween(5, 1000))
+                .betOdds((double) faker.number().numberBetween(1, 6))
                 .build();
     }
 

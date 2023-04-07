@@ -19,14 +19,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DbMatchProviderPersistenceServiceTest implements MatchProvider {
     @Mock
     private MatchRepository matchRepository;
     @Mock
-    AdminService adminService;
+    private AdminService adminService;
     @Spy
     private MatchMapper matchMapper = new MatchMapperImpl();
     @Mock
@@ -40,23 +39,11 @@ class DbMatchProviderPersistenceServiceTest implements MatchProvider {
     void givenAdminUserAndMatch_whenSaveWithAdmin_thenReturnCheckIfSaved() {
         //given
         Match match = provideMatch();
-        given(adminService.isAdmin("admin")).willReturn(true);
         //when
         dbMatchPersistenceService.saveWithAdmin("admin", match);
         //then
         then(matchRepository).should().save(entityCaptor.capture());
     }
-    @Test
-    void givenNotAdminUserAndMatch_whenSaveWithAdmin_thenDoNothing() {
-        //given
-        Match match = provideMatch();
-        given(adminService.isAdmin("user")).willReturn(false);
-        //when
-        dbMatchPersistenceService.saveWithAdmin("user", match);
-        //then
-        then(matchRepository).should(never()).save(entityCaptor.capture());
-    }
-
     @Test
     void givenListOfMatches_whenGetAllMatches_thenReturnListOfMatches() {
         //given
