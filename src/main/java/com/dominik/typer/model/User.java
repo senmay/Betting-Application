@@ -14,5 +14,6 @@ public class User {
     private Integer points;
     private String email;
     private Double balance;
-    private UserRole userType ;
+    private UserRole userType;
+    private String password;
 }

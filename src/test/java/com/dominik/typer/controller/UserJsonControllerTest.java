@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +40,8 @@ class UserJsonControllerTest implements UserProvider {
 
     @Test
     void givenUser_whenGetAllUsers_returnUsers() throws Exception {
-        User u = new User(1, "A", 10, "a@wp.pl", BigDecimal.ZERO, UserRole.USER);
-        User u2 = new User(2, "B", 20, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
+        User u = new User(1, "A",  10, "a@wp.pl", 0.00, UserRole.USER, "password");
+        User u2 = new User(2, "B", 20, "b@wp.pl", 0.00, UserRole.USER, "superancko");
         when(userService.getUsers()).thenReturn(List.of(u, u2));
         mockMvc.perform(get("/user"))
                 .andExpect(status().is(200))
@@ -55,7 +54,7 @@ class UserJsonControllerTest implements UserProvider {
 
     @Test
     void givenUser_whenGetUser_returnUser() throws Exception {
-        User u = new User(1, "A", 10, "b@wp.pl", BigDecimal.ZERO, UserRole.USER);
+        User u = new User(1, "A", 10, "b@wp.pl", 0.00, UserRole.USER, "password");
         when(userService.getUser(1)).thenReturn(Optional.of(u));
         String contentAsString = mockMvc.perform(get("/user/1"))
                 .andExpect(status().is(200))

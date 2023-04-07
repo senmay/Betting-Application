@@ -4,6 +4,7 @@ import com.dominik.typer.model.User;
 import com.dominik.typer.service.adminpersistence.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +16,21 @@ import java.util.Optional;
 public class UserService {
     private final UserPersistence userPersistence;
     private final AdminService adminService;
-    public void saveWithAdmin(String username, final User user) {
+    private final PasswordEncoder passwordEncoder;
+    public void saveWithAdmin(final User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (adminService.checkIfEmpty()) {
             userPersistence.saveAdmin(user);
-        } else if (adminService.isAdmin(username)) {
-            userPersistence.saveWithAdmin(username, user);
+        } else {
+            userPersistence.saveWithAdmin(user);
+        }
+    }
+    public void register(final User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (adminService.checkIfEmpty()) {
+            userPersistence.saveAdmin(user);
+        } else {
+            userPersistence.register(user);
         }
     }
     public void deleteUser(final Integer id) {

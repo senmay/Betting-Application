@@ -26,7 +26,7 @@ public class CacheUserPersistenceService implements UserPersistence {
 
     //TODO  implement
     @Override
-    public void saveWithAdmin(String username, User user) {
+    public void saveWithAdmin(User user) {
 
     }
 
@@ -73,6 +73,11 @@ public class CacheUserPersistenceService implements UserPersistence {
         User user = data.get(id);
         user.setBalance(user.getBalance() + balance);
         data.put(id, user);
+    }
+
+    @Override
+    public void register(User user) {
+
     }
 
 }

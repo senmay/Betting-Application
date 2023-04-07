@@ -24,7 +24,9 @@ public class UserJson {
     Double balance;
     @NotNull(groups = {ValidationGroupBusinessLogic.class})
     UserRole userType;
-    @NotEmpty(groups = {ValidationGroupJson.class, ValidationGroupPutJson.class})
     @Pattern(regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", groups = {ValidationGroupJson.class})
     String email;
+    @NotEmpty(groups = {ValidationGroupJson.class, ValidationGroupPutJson.class})
+    @Length(min = 8, max = 20, groups = {ValidationGroupJson.class})
+    String password;
 }
