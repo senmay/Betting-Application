@@ -5,6 +5,7 @@ import com.dominik.typer.enumerations.UserRole;
 import com.dominik.typer.model.User;
 import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
+import com.dominik.typer.security.SecurityService;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.userpersistence.UserService;
 import com.dominik.typer.validators.GeneralValidator;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,12 +27,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = {UserJsonController.class, UserMapper.class})
+@AutoConfigureMockMvc(addFilters = false)
 class UserJsonControllerTest implements UserProvider {
 
     @MockBean
     UserService userService;
     @Autowired
     ObjectMapper objectMapper;
+    @MockBean
+    SecurityService securityService;
     @MockBean
     DbErrorService dbErrorService;
     @MockBean
@@ -40,10 +45,12 @@ class UserJsonControllerTest implements UserProvider {
 
     @Test
     void givenUser_whenGetAllUsers_returnUsers() throws Exception {
-        User u = new User(1, "A",  10, "a@wp.pl", 0.00, UserRole.USER, "password");
-        User u2 = new User(2, "B", 20, "b@wp.pl", 0.00, UserRole.USER, "superancko");
+        User u = new User(1, "admin",  10, "a@wp.pl", 0.00, UserRole.ADMIN, "password");
+        User u2 = new User(2, "user", 20, "b@wp.pl", 0.00, UserRole.USER, "superancko");
+        System.out.println(u.getUsername() + u2.getUsername());
         when(userService.getUsers()).thenReturn(List.of(u, u2));
-        mockMvc.perform(get("/user"))
+        mockMvc
+                .perform(get("/user"))
                 .andExpect(status().is(200))
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(jsonPath("$[0].id", Matchers.equalTo(1)))

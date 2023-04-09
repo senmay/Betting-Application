@@ -26,18 +26,18 @@ public class MatchEntity {
     private Double oddsForHomeTeam;
     private Double oddsForDraw;
     private Double oddsForAwayTeam;
-    private Boolean isFinished;
     private Integer matchResultId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MatchEntity that)) return false;
-        return isFinished == that.isFinished && Objects.equals(id, that.id) && Objects.equals(homeTeamId, that.homeTeamId) && Objects.equals(awayTeamId, that.awayTeamId) && Objects.equals(dateOfEvent, that.dateOfEvent);
+        if (o == null || getClass() != o.getClass()) return false;
+        MatchEntity that = (MatchEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(homeTeamId, that.homeTeamId) && Objects.equals(awayTeamId, that.awayTeamId) && Objects.equals(dateOfEvent, that.dateOfEvent) && Objects.equals(oddsForHomeTeam, that.oddsForHomeTeam) && Objects.equals(oddsForDraw, that.oddsForDraw) && Objects.equals(oddsForAwayTeam, that.oddsForAwayTeam) && Objects.equals(matchResultId, that.matchResultId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, homeTeamId, awayTeamId, dateOfEvent, isFinished);
+        return Objects.hash(id, homeTeamId, awayTeamId, dateOfEvent, oddsForHomeTeam, oddsForDraw, oddsForAwayTeam, matchResultId);
     }
 }
