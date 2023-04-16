@@ -25,7 +25,7 @@ public class CacheMatchPersistenceService implements MatchPersistence {
         matchMap.put(match.getId(), match);
     }
     @Override
-    public void saveWithAdmin(String username, Match match) {
+    public void saveWithAdmin(Match match) {
         if (matchMap.containsKey(match.getId())) {
             throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, match.getId()));
         }
