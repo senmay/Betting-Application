@@ -18,13 +18,6 @@ public class DbErrorService {
 
     @Async
     public CompletableFuture<Void> saveAsync(DbError dbError) {
-        log.error("Async save!");
-//        dbErrorRepository.save(dbError);
-//        try {
-//            Thread.sleep(Duration.ofSeconds());
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
         log.error("saved!");
         return CompletableFuture.completedFuture(null);
     }

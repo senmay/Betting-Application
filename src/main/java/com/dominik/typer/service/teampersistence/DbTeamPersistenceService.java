@@ -65,5 +65,10 @@ public class DbTeamPersistenceService implements TeamPersistence {
         teamEntity.get().setName(team.getName());
         teamRepository.save(teamEntity.get());
     }
+
+    @Override
+    public void saveAllTeams(List<Team> teams) {
+        teamRepository.saveAll(teamMapper.mapToListTeamEntity(teams));
+    }
 }
 
