@@ -8,7 +8,6 @@ import com.dominik.typer.service.teampersistence.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +23,10 @@ public class MatchService {
     private final TeamService teamService;
     private final AdminService adminService;
 
-    public void saveMatchWithAdmin(String username, Match match) {
-        adminService.isAdmin(username);
+    public void saveMatchWithAdmin(Match match) {
         validateTeamsExists(match.getHomeTeamId(), match.getAwayTeamId());
         canScheduleMatch(match.getHomeTeamId(), match.getAwayTeamId(), match.getDateOfEvent());
-        matchPersistence.saveWithAdmin(username, match);
+        matchPersistence.saveWithAdmin(match);
     }
     @CacheEvict(allEntries = true)
     public void deleteMatch(Integer id) {
@@ -42,10 +40,6 @@ public class MatchService {
     @Cacheable
     public List<Match> getMatches() {
         return matchPersistence.getAllMatches();
-    }
-    @CachePut(key = "#id")
-    public void updateMatch(Integer id, Match match) {
-        matchPersistence.updateMatchById(id, match);
     }
     @Cacheable
     public List<Match> getMatchesPossibleToBet() {

@@ -12,7 +12,7 @@ public interface MatchPersistence {
     Optional<Match> getMatchById(Integer id);
     void deleteMatchById(Integer id);
     void updateMatchById(Integer id, Match match);
-    void saveWithAdmin(String username, Match match);
+    void saveWithAdmin(Match match);
     List<Match> getAllMatchesPossibleToBet();
     List<Match> getAllMatchesByTeamId(Integer id);
     List<Match> getMatchesByTeamIdWithinTimeRange(Integer id, LocalDateTime startTime, LocalDateTime endTime);

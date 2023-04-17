@@ -24,7 +24,7 @@ public class DbMatchPersistenceService implements MatchPersistence {
         matchRepository.save(matchMapper.mapToEntity(match));
     }
     @Override
-    public void saveWithAdmin(String username, Match match) {
+    public void saveWithAdmin(Match match) {
             matchRepository.save(matchMapper.mapToEntity(match));
         }
     @Override
