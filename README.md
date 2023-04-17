@@ -1,6 +1,6 @@
 # Sports Betting Application
 
-This is a sports betting application built using Spring Boot and Hibernate. The application provides a RESTful API for users to place bets on sports events and manages the user balance and bet results. Application is still in development. In wikis there is scenario for creating bet using request.
+This is a sports betting application built using Spring Boot and Hibernate. The application provides a RESTful API for users to place bets on sports events and manages the user balance and bet results. Application is still in development. In [wikis](https://github.com/senmay/Betting-Application/wiki) there are informations about validations and design of this app and also there is scenario for creating bet using request.
 
 ## Overview
 
@@ -28,6 +28,28 @@ The application is designed with a focus on modularity, scalability, and maintai
 - RESTful API
 - Lombok and MapStruct for reducing boilerplate code
 - Aspect-Oriented Programming (AOP) for updating balances after entering match result
+
+## Controllers
+
+- GoogleSheetsController: This controller manages interactions with Google Sheets, including creating, deleting, and exporting sheets.
+- UserJsonController: Manages user-related endpoints, including registration, retrieval, and updating user details.
+- TeamController: Manges teams inclugin import teams from Google Sheets and handles runtime exceptions.
+- MatchResultController: Controller is responsible for saving and retrieving match results.
+- MatchController: Manages match-related endpoints, including creating, retrieving, updating, and deleting matches.
+- DbErrorController: This controller handles error-related endpoints, such as retrieving all errors.
+- BetController: Manages bet-related endpoints, including creating and retrieving bets for a specific user.
+
+## Services
+
+- UserService: Handles user registration, authentication, and user-related operations
+- BetService: Manages bet-related operations, including placing bets, retrieving bets, and filtering bets
+- MatchService: Handles match-related operations, including creating, retrieving, and updating match details
+- OddsService: Interacts with the Odds API to fetch and manage real-time odds data
+- BalanceService: Updates user balances upon match result updates and handles winning and losing bets
+- DbTeamPersistenceService: Manages team-related operations, such as saving, retrieving, updating, and deleting teams
+- GoogleSheetsService: Interacts with Google Sheets to add, delete, and export sheets, as well as read and write team data
+- GeneralValidator: Validates objects and handles exceptions for various input types
+
 
 ## Acknowledgments
 
