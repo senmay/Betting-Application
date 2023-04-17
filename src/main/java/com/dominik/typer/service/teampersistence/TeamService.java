@@ -37,6 +37,10 @@ public class TeamService {
         teamPersistence.updateTeamByName(name, team);
     }
 
+    public void importTeams(List<Team> teams) {
+        teams.forEach(team -> checkForDuplicateTeam(team));;
+        teamPersistence.saveAllTeams(teams);
+    }
     private void checkForDuplicateTeam(Team team) {
         Optional<Team> teamFromDb = teamPersistence.getTeamByName(team.getName());
         if (teamFromDb.isPresent()) {

@@ -55,4 +55,9 @@ public class CacheTeamPersistenceService implements TeamPersistence {
         teams.put(name, team);
     }
 
+    @Override
+    public void saveAllTeams(List<Team> teams) {
+        teams.forEach(this::saveTeam);
+    }
+
 }

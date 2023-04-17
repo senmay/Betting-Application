@@ -39,7 +39,6 @@ public class MatchService {
     public Optional<Match> getMatch(Integer id) {
         return matchPersistence.getMatchById(id);
     }
-
     @Cacheable
     public List<Match> getMatches() {
         return matchPersistence.getAllMatches();
