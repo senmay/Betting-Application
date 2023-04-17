@@ -85,7 +85,6 @@ public class UserJsonController {
                 .errorType(exception.getClass().getSimpleName())
                 .errorMessage(exception.getMessage())
                 .timestamp(LocalDateTime.now()).build();
-        log.error("Before Async save!");
         dbErrorService.saveAsync(dbError);
 
         return dbError;

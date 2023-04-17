@@ -69,7 +69,7 @@ public class MatchController {
         matchService.deleteMatch(id);
     }
 
-    @GetMapping("/api/parse")
+    @PostMapping("/api/parse")
     @ResponseStatus(HttpStatus.OK)
         // if you want to parse matches from championship league, you should pass "CL" as league parameter
     void parseUpcomingMatchesFromApi(@RequestParam String league) {

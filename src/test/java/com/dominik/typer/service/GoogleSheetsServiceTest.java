@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
-import static org.CSV.MyCsvService.getSheetsService;
+import static com.dominik.typer.service.GoogleSheetsService.getSheetsService;
 
-class CSVServiceTest {
+class GoogleSheetsServiceTest {
 
     private static Sheets sheetsService;
     private static String SPREADSHEET_ID = "1O9wdU6vJuirgdrzm3GMV5_VVaI81XjdrWbgWG-OZfQ4";

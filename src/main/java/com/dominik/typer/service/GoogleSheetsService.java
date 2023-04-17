@@ -21,7 +21,7 @@ import static org.CSV.GoogleAuthorizeUtil.getCredentials;
 
 @Service
 @Slf4j
-public class CSVService {
+public class GoogleSheetsService {
     private static Sheets sheetsService;
     private final TeamService teamService;
     private static String SPREADSHEET_ID = "1O9wdU6vJuirgdrzm3GMV5_VVaI81XjdrWbgWG-OZfQ4";
@@ -29,7 +29,7 @@ public class CSVService {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private final GeneralValidator validator;
 
-    public CSVService(GeneralValidator validator, TeamService teamService) throws GeneralSecurityException, IOException {
+    public GoogleSheetsService(GeneralValidator validator, TeamService teamService) throws GeneralSecurityException, IOException {
         this.validator = validator;
         this.teamService = teamService;
         sheetsService = getSheetsService();
@@ -116,7 +116,7 @@ public class CSVService {
         return teams.stream().toList();
     }
 
-    public void exportTeamToSpreadsheet(String sheetTitle) throws IOException {
+    public void exportToSpreadsheet(String sheetTitle) throws IOException {
         Integer sheetId = getSheetIdByTitle(sheetTitle);
         if (sheetId == null) {
             sheetId = addSheetToSpreadsheet(sheetTitle);

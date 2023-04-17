@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class User {
+public class User{
     private Integer id;
     private String username;
     private Integer points;
@@ -16,4 +16,5 @@ public class User {
     private Double balance;
     private UserRole userType;
     private String password;
+
 }

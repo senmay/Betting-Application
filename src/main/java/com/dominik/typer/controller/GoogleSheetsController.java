@@ -1,6 +1,6 @@
 package com.dominik.typer.controller;
 
-import com.dominik.typer.service.CSVService;
+import com.dominik.typer.service.GoogleSheetsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,25 +13,25 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class GoogleSheetsController {
-    private final CSVService csvService;
+    private final GoogleSheetsService googleSheetsService;
 
     @PostMapping("/new")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     void createNewSheetInSpreadsheet(@RequestParam String sheetTitle) throws IOException {
-        csvService.addSheetToSpreadsheet(sheetTitle);
+        googleSheetsService.addSheetToSpreadsheet(sheetTitle);
     }
     @DeleteMapping("/delete")
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteSheetFromSpreadsheet(@RequestParam String sheetTitle) throws IOException {
-        csvService.deleteSheetFromSpreadsheet(sheetTitle);
+        googleSheetsService.deleteSheetFromSpreadsheet(sheetTitle);
     }
 
     @PostMapping("/exportTeam")
     @ResponseStatus(HttpStatus.OK)
     void exportToSpreadsheet(@RequestParam String sheetTitle) throws IOException {
-        csvService.exportTeamToSpreadsheet(sheetTitle);
+        googleSheetsService.exportToSpreadsheet(sheetTitle);
     }
 
 }

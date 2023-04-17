@@ -11,7 +11,6 @@ public interface MatchPersistence {
     List<Match> getAllMatches();
     Optional<Match> getMatchById(Integer id);
     void deleteMatchById(Integer id);
-    void updateMatchById(Integer id, Match match);
     void saveWithAdmin(Match match);
     List<Match> getAllMatchesPossibleToBet();
     List<Match> getAllMatchesByTeamId(Integer id);

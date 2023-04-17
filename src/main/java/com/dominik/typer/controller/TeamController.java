@@ -5,7 +5,7 @@ import com.dominik.typer.model.csv.TeamCSV;
 import com.dominik.typer.model.exceptions.DbError;
 import com.dominik.typer.model.json.TeamJson;
 import com.dominik.typer.model.mapper.TeamMapper;
-import com.dominik.typer.service.CSVService;
+import com.dominik.typer.service.GoogleSheetsService;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.teampersistence.TeamService;
 import com.dominik.typer.validators.GeneralValidator;
@@ -27,7 +27,7 @@ public class TeamController {
     private final TeamMapper teamMapper;
     private final DbErrorService dbErrorService;
     private final GeneralValidator generalValidator;
-    private final CSVService csvService;
+    private final GoogleSheetsService googleSheetsService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -65,7 +65,7 @@ public class TeamController {
     @PutMapping("/import")
     @ResponseStatus(HttpStatus.OK)
     void importTeamsFromGoogleSheets(@RequestParam String sheetTitle) throws IOException {
-        List<TeamCSV> teams = csvService.getTeamsFromGoogleSheets(sheetTitle);
+        List<TeamCSV> teams = googleSheetsService.getTeamsFromGoogleSheets(sheetTitle);
         teamService.importTeams(teamMapper.mapFromListCSV(teams));
     }
 

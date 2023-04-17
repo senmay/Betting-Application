@@ -2,10 +2,10 @@
 /target/
 /src/main/java/org/
 /src/test/java/org.mocktest/
-/src/main/java/com/dominik/typer/cachelessons/
 
 *.iml
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+/src/main/java/com/dominik/typer/cachelessons/
