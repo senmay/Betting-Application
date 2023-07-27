@@ -69,12 +69,4 @@ public class CacheMatchPersistenceService implements MatchPersistence {
         }
         matchMap.remove(id);
     }
-
-    @Override
-    public void updateMatchById(Integer id, Match match) {
-        if (!matchMap.containsKey(id)) {
-            throw new MyAppException(String.format(MATCH_EXISTS_ERROR_MSG, id));
-        }
-        matchMap.put(id, match);
-    }
 }

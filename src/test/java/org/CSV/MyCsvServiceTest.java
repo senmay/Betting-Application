@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
-import static org.CSV.MyCsvService.getSheetsService;
+import static com.dominik.typer.service.GoogleSheetsService.getSheetsService;
 
 class MyCsvServiceTest {
 
