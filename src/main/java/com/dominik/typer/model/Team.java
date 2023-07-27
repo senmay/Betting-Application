@@ -9,7 +9,8 @@ import lombok.*;
 public class Team {
     private Integer id;
     private String name;
-    private Boolean inactive;
+    @Builder.Default
+    private Boolean inactive = false;
 
 }
 

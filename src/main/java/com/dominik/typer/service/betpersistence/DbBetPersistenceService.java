@@ -50,7 +50,7 @@ public class DbBetPersistenceService implements BetPersistence {
 
     @Override
     public List<Bet> getBetsFromMatch(Integer id) {
-        List<BetEntity> betEntityList = betRepository.findAllBetsByMatchId(id);
+        List<BetEntity> betEntityList = betRepository.findAllByMatchId(id);
         return betMapper.mapToListBet(betEntityList);
     }
 }

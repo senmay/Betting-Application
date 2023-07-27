@@ -19,6 +19,7 @@ public interface UserProvider {
                 .email("admin@wp.pl")
                 .userType(UserRole.ADMIN)
                 .balance(100.00)
+                .password("admin")
                 .build();
     }
 

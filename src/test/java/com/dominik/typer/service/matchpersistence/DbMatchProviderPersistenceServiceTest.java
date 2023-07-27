@@ -40,7 +40,7 @@ class DbMatchProviderPersistenceServiceTest implements MatchProvider {
         //given
         Match match = provideMatch();
         //when
-        dbMatchPersistenceService.saveWithAdmin("admin", match);
+        dbMatchPersistenceService.saveWithAdmin(match);
         //then
         then(matchRepository).should().save(entityCaptor.capture());
     }

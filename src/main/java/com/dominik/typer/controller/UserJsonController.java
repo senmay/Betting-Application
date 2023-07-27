@@ -4,6 +4,7 @@ import com.dominik.typer.model.User;
 import com.dominik.typer.model.exceptions.DbError;
 import com.dominik.typer.model.json.UserJson;
 import com.dominik.typer.model.mapper.UserMapper;
+import com.dominik.typer.security.SecurityService;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.userpersistence.UserService;
 import com.dominik.typer.validators.GeneralValidator;
@@ -28,6 +29,7 @@ public class UserJsonController {
     private final UserMapper userMapper;
     private final DbErrorService dbErrorService;
     private final GeneralValidator validator;
+    private final SecurityService securityService;
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     List<UserJson> getAllUsers() {
@@ -35,22 +37,30 @@ public class UserJsonController {
         return userMapper.mapToUserJsonList(userList);
     }
 
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    void registerUser(@RequestBody UserJson userJson) {
+        validator.validateObject(userJson, ValidationGroupJson.class);
+        userService.register(userMapper.mapFromJson(userJson));
+    }
+
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    void saveUser(@RequestHeader("login") String username, @RequestBody UserJson userJson) {
+    void registerUserWithAdmin(@RequestBody UserJson userJson) {
         validator.validateObject(userJson, ValidationGroupJson.class);
-        userService.saveUser(username, userMapper.mapFromJson(userJson));
+        userService.saveWithAdmin(userMapper.mapFromJson(userJson));
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     Optional<UserJson> getUser(@PathVariable Integer id) {
+        securityService.checkIfAuthenticatedUserHasPermissionToSeeUser(id);
         Optional<User> user = userService.getUser(id);
         return user.map(userMapper::mapToJson);
     }
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void updateUser(@PathVariable Integer id, @RequestBody UserJson updatedUser) {
+        validator.validatePathVariable(id);
         validator.validateObject(updatedUser, ValidationGroupPutJson.class);
         userService.updateUser(id, userMapper.mapFromJson(updatedUser));
     }
@@ -62,7 +72,7 @@ public class UserJsonController {
         userService.deleteUser(id);
     }
 
-    @PostMapping("/balance")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void updateBalance(@RequestBody UserJson userJson) {
         userService.updateBalance(userJson.getId(), userJson.getBalance());
@@ -75,7 +85,6 @@ public class UserJsonController {
                 .errorType(exception.getClass().getSimpleName())
                 .errorMessage(exception.getMessage())
                 .timestamp(LocalDateTime.now()).build();
-        log.error("Before Async save!");
         dbErrorService.saveAsync(dbError);
 
         return dbError;

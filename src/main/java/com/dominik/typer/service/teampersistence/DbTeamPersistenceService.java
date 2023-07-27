@@ -34,7 +34,7 @@ public class DbTeamPersistenceService implements TeamPersistence {
     @Override
     public Optional<Team> getTeamByName(String name) {
         Optional<TeamEntity> byName = teamRepository.getByName(name);
-        return byName.map(teamMapper::mapFromTeamEntity);
+        return Optional.ofNullable(byName.map(teamMapper::mapFromTeamEntity).orElseThrow(() -> new MyAppException("No team with this name", DbTeamPersistenceService.class)));
     }
     @Override
     public List<Team> getAllTeams() {
@@ -64,6 +64,11 @@ public class DbTeamPersistenceService implements TeamPersistence {
         Optional<TeamEntity> teamEntity = teamRepository.findByName(name);
         teamEntity.get().setName(team.getName());
         teamRepository.save(teamEntity.get());
+    }
+
+    @Override
+    public void saveAllTeams(List<Team> teams) {
+        teamRepository.saveAll(teamMapper.mapToListTeamEntity(teams));
     }
 }
 

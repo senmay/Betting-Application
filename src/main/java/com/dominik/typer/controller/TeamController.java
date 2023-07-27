@@ -1,9 +1,11 @@
 package com.dominik.typer.controller;
 
 import com.dominik.typer.model.Team;
+import com.dominik.typer.model.csv.TeamCSV;
 import com.dominik.typer.model.exceptions.DbError;
 import com.dominik.typer.model.json.TeamJson;
 import com.dominik.typer.model.mapper.TeamMapper;
+import com.dominik.typer.service.GoogleSheetsService;
 import com.dominik.typer.service.DbErrorService;
 import com.dominik.typer.service.teampersistence.TeamService;
 import com.dominik.typer.validators.GeneralValidator;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +27,13 @@ public class TeamController {
     private final TeamMapper teamMapper;
     private final DbErrorService dbErrorService;
     private final GeneralValidator generalValidator;
+    private final GoogleSheetsService googleSheetsService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void createTeam(@RequestHeader("login") String username, @RequestBody TeamJson teamJson) {
+    void createTeam(@RequestBody TeamJson teamJson) {
         generalValidator.validateObject(teamJson, ValidationGroupJson.class);
-        teamService.saveTeam(username, teamMapper.mapFromJson(teamJson));
+        teamService.saveTeam(teamMapper.mapFromJson(teamJson));
     }
 
     @GetMapping
@@ -56,6 +60,13 @@ public class TeamController {
     @ResponseStatus(HttpStatus.OK)
     void updateTeam(@PathVariable String name, @RequestBody TeamJson teamJson) {
         teamService.updateTeam(name, teamMapper.mapFromJson(teamJson));
+    }
+
+    @PutMapping("/import")
+    @ResponseStatus(HttpStatus.OK)
+    void importTeamsFromGoogleSheets(@RequestParam String sheetTitle) throws IOException {
+        List<TeamCSV> teams = googleSheetsService.getTeamsFromGoogleSheets(sheetTitle);
+        teamService.importTeams(teamMapper.mapFromListCSV(teams));
     }
 
     @ExceptionHandler(RuntimeException.class)

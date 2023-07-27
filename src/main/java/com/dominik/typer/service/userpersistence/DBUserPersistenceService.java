@@ -6,6 +6,7 @@ import com.dominik.typer.model.entity.UserEntity;
 import com.dominik.typer.model.exceptions.MyAppException;
 import com.dominik.typer.model.mapper.UserMapper;
 import com.dominik.typer.repository.UserRepository;
+import com.dominik.typer.service.adminpersistence.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class DBUserPersistenceService implements UserPersistence {
     private final UserRepository userRepository;
 
     @Autowired
-    public DBUserPersistenceService(UserMapper userMapper, UserRepository userRepository) {
+    public DBUserPersistenceService(UserMapper userMapper, UserRepository userRepository, AdminService adminService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
     }
@@ -33,7 +34,13 @@ public class DBUserPersistenceService implements UserPersistence {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void register(User user){
+        user.setUserType(UserRole.USER);
+        userRepository.save(userMapper.mapToUserEntity(user));}
+
+    @Override
+    //todo change method
+    public void saveWithAdmin(User user) {
         user.setUserType(UserRole.USER);
         userRepository.save(userMapper.mapToUserEntity(user));
     }
@@ -46,9 +53,6 @@ public class DBUserPersistenceService implements UserPersistence {
     @Override
     public Optional<User> getUserById(Integer id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        if (userEntity.isEmpty()) {
-            throw new MyAppException("No user with id " + id);
-        }
         return userEntity.map(userMapper::mapToUser);
     }
     @Override
@@ -81,7 +85,7 @@ public class DBUserPersistenceService implements UserPersistence {
     @Override
     public void updateUserById(Integer id, User user) {
         if (!userRepository.existsById(id)) {
-            throw new MyAppException("No user with id " + id);
+            throw new RuntimeException("No user with id " + id);
         }
         Optional<UserEntity> userEntity = userRepository.findById(id);
         User updatedUser = userMapper.mapToUser(userEntity.get());

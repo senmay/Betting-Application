@@ -19,6 +19,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String username;
+    private String password;
     private Integer points;
     private String email;
     private Double balance;

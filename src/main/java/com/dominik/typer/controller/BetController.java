@@ -6,6 +6,7 @@ import com.dominik.typer.service.betpersistence.BetService;
 import com.dominik.typer.validators.GeneralValidator;
 import com.dominik.typer.validators.ValidationGroupJson;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/bet")
 @RequiredArgsConstructor
+@Slf4j
 public class BetController {
     private final BetService betService;
     private final BetMapper betMapper;
     private final GeneralValidator validator;
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createBet(@RequestBody BetJson betJson) {

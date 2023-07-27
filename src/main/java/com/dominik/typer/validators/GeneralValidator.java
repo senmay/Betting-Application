@@ -6,6 +6,8 @@ import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 @Component
 @AllArgsConstructor
@@ -24,5 +26,15 @@ public class GeneralValidator
         if (id == null || id <= 0) {
             throw new MyAppException("Id cannot be null or less than 1");
         }
+    }
+
+    public <T> List<String> validateObjectAndGetErrors(T object, Class<?>... groups) {
+        Set<ConstraintViolation<T>> violations = validator.validate(object, groups);
+        List<String> errors = new ArrayList<>();
+
+        for (ConstraintViolation<T> violation : violations) {
+            errors.add(violation.toString());
+        }
+        return errors;
     }
 }

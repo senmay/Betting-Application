@@ -12,4 +12,5 @@ public interface TeamPersistence {
     List<Team> getAllTeams();
     boolean deleteTeamByName(String name);
     void updateTeamByName(String name, Team team);
+    void saveAllTeams(List<Team> teams);
 }

@@ -22,13 +22,13 @@ public class BetService {
     private final UserPersistence userPersistence;
     private final MatchPersistence matchPersistence;
 
-    //negate value to update balance
     public void saveBet(Bet bet) {
         checkIfUserExistsById(bet.getUserId());
         checkIfMatchExists(bet.getMatchId());
         Double odds = checkOddsForBet(bet.getMatchId(), bet.getBetType());
         bet.setBetOdds(odds);
         checkIfUserHasMoneyForBet(userService.getUser(bet.getUserId()).get().getUsername(), bet.getBetAmount());
+        //negate value to update balance
         userPersistence.updateBalance(bet.getUserId(), (-1) * bet.getBetAmount());
         betPersistence.saveBet(bet);
     }
@@ -68,11 +68,6 @@ public class BetService {
 
     private double checkOddsForBet(Integer id, MatchOutcome betType) {
         Match match = matchPersistence.getMatchById(id).get();
-        Double odds = switch (betType) {
-            case HOME_TEAM_WIN -> match.getOddsForHomeTeam();
-            case AWAY_TEAM_WIN -> match.getOddsForAwayTeam();
-            case DRAW -> match.getOddsForDraw();
-        };
-        return odds;
+        return match.getOddsByMatchOutcome(betType);
     }
 }

@@ -2,7 +2,6 @@ package com.dominik.typer.service.teampersistence;
 
 import com.dominik.typer.model.Team;
 import com.dominik.typer.model.exceptions.MyAppException;
-import com.dominik.typer.service.adminpersistence.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamPersistence teamPersistence;
-    private final AdminService adminService;
 
     public Team getTeamById(Integer id) {
         return teamPersistence.getTeamById(id);
@@ -23,12 +21,10 @@ public class TeamService {
         return teamPersistence.getTeamByName(name);
     }
 
-    public void saveTeam(String username, Team team) {
-        if (!checkForDuplicateTeam(team) && adminService.isAdmin(username)) {
-            teamPersistence.saveTeam(team);
-        }
+    public void saveTeam(Team team) {
+        checkForDuplicateTeam(team);
+        teamPersistence.saveTeam(team);
     }
-
     public boolean deleteTeam(String name) {
         return teamPersistence.deleteTeamByName(name);
     }
@@ -41,12 +37,15 @@ public class TeamService {
         teamPersistence.updateTeamByName(name, team);
     }
 
-    private boolean checkForDuplicateTeam(Team team) {
+    public void importTeams(List<Team> teams) {
+        teams.forEach(team -> checkForDuplicateTeam(team));;
+        teamPersistence.saveAllTeams(teams);
+    }
+    private void checkForDuplicateTeam(Team team) {
         Optional<Team> teamFromDb = teamPersistence.getTeamByName(team.getName());
         if (teamFromDb.isPresent()) {
             throw new MyAppException("Team with this name already exists");
-        } else {
-            return false;
+
         }
     }
 }
